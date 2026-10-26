@@ -1,0 +1,5 @@
+[
+  { "id": "pancakes", "name": "Protein Pancakes with Berries", "cat": "breakfast", "calories": 410, "protein": 28, "desc": "Fluffy pancakes with berries for a strong start.", "img": "protein-pancakes-berries.jpg" },
+  { "id": "salmon", "name": "Baked Salmon with Vegetables", "cat": "post-workout", "calories": 480, "protein": 40, "desc": "Omega-3 rich recovery dinner.", "img": "baked-salmon-vegetables.jpg" },
+  { "id": "chia", "name": "Chia Seed Pudding", "cat": "snack", "calories": 220, "protein": 9, "desc": "A light snack full of fiber.", "img": "chia-seed-pudding.jpg" }
+]

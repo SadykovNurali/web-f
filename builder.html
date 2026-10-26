@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Build your own healthy meal bowl with Food Craft.">
+    <title>Food Craft - Meal Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="builder-order.css">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg bg-foodcraft navbar-dark" aria-label="Main navigation">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Food Craft</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="sportfood.html">Sport Food</a></li>
+                    <li class="nav-item"><a class="nav-link" href="recipes.html">Recipes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="team.html">Our Team</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="builder.html">Meal Builder</a></li>
+                    <li class="nav-item"><a class="nav-link" href="order.html">Order</a></li>
+                    <li class="nav-item ms-lg-3 mt-3 mt-lg-0 color-control">
+                        <button type="button" class="btn btn-sm btn-outline-light" id="bg-color-btn">Change color</button>
+                        <input type="color" id="bg-color-picker" value="#f5f7f2" aria-label="Choose page background color">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section class="page-intro py-5 px-3">
+        <div class="container text-center">
+            <img src="images/foodcraft.jpg" class="logo-image mb-3" alt="Food Craft logo">
+            <p class="eyebrow mb-2">BUILD · EAT · ENJOY</p>
+            <h1 class="mb-3">Interactive Meal Builder</h1>
+            <p class="lead mx-auto mb-3 intro-text">Build your personalized meal bowl by choosing your favorite base, protein, and extra toppings.</p>
+            <div class="d-flex justify-content-center flex-wrap gap-2">
+                <a href="#popular-bowls" class="btn btn-success">Popular Bowls</a>
+                <a href="#build-form" class="btn btn-outline-success">Custom Builder</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="container pb-4 pb-lg-5">
+        <div class="section-box p-3 p-lg-4">
+            <p class="eyebrow mb-1">KNOW WHAT YOU EAT</p>
+            <h2 class="mb-3">Ingredient Calorie &amp; Price Guide</h2>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle fc-table mb-0">
+                    <thead><tr><th>Ingredient Category</th><th>Ingredient Name</th><th>Calories (kcal)</th><th>Price (KZT)</th></tr></thead>
+                    <tbody>
+                        <tr><td>Base</td><td>Brown Rice / Quinoa</td><td>140</td><td>600 ₸</td></tr>
+                        <tr><td>Protein</td><td>Grilled Chicken Breast</td><td>165</td><td>900 ₸</td></tr>
+                        <tr><td>Vegetables</td><td>Fresh Avocado &amp; Greens</td><td>120</td><td>500 ₸</td></tr>
+                        <tr><td>Dressing</td><td>Olive Oil &amp; Herb Sauce</td><td>90</td><td>300 ₸</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="popular-bowls" class="container pb-4 pb-lg-5">
+        <div class="section-box p-3 p-lg-4">
+            <p class="eyebrow mb-1">FAST &amp; TASTY</p>
+            <h2 class="mb-2">Popular Fast &amp; Tasty Bowls</h2>
+            <p class="text-secondary mb-4">Choose one of our most popular quick combos or build your own bowl below.</p>
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="card fc-card h-100">
+                        <img src="images/burg.jpg" class="card-img-top recipe-card-img" alt="Double Cheeseburger Bowl" loading="lazy">
+                        <div class="card-body p-3 p-lg-4 d-flex flex-column">
+                            <span class="recipe-tag">Popular</span>
+                            <h3 class="card-title mt-2">Double Cheese Burger Bowl</h3>
+                            <p class="card-text">Juicy beef patties, melted cheddar cheese, pickles, and signature sauce.</p>
+                            <p class="price mb-3">2 200 ₸</p>
+                            <button type="button" class="btn btn-outline-success w-100 mt-auto">Quick Select</button>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="card fc-card h-100">
+                        <img src="images/pizz.jpg" class="card-img-top recipe-card-img" alt="Pepperoni Pizza Bowl" loading="lazy">
+                        <div class="card-body p-3 p-lg-4 d-flex flex-column">
+                            <span class="recipe-tag">Popular</span>
+                            <h3 class="card-title mt-2">Pepperoni Pizza Bowl</h3>
+                            <p class="card-text">Classic spicy pepperoni slices, mozzarella cheese, and rich tomato sauce.</p>
+                            <p class="price mb-3">1 950 ₸</p>
+                            <button type="button" class="btn btn-outline-success w-100 mt-auto">Quick Select</button>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="card fc-card h-100">
+                        <img src="images/chic.jpg" class="card-img-top recipe-card-img" alt="Crispy Chicken and Fries" loading="lazy">
+                        <div class="card-body p-3 p-lg-4 d-flex flex-column">
+                            <span class="recipe-tag">Popular</span>
+                            <h3 class="card-title mt-2">Crispy Chicken &amp; Fries</h3>
+                            <p class="card-text">Golden crispy chicken tenders, seasoned french fries, and dip sauce.</p>
+                            <p class="price mb-3">1 800 ₸</p>
+                            <button type="button" class="btn btn-outline-success w-100 mt-auto">Quick Select</button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="build-form" class="container pb-4 pb-lg-5">
+        <div class="section-box p-3 p-lg-4">
+            <p class="eyebrow mb-1">YOUR OWN COMBINATION</p>
+            <h2 class="mb-2">Assemble Your Custom Bowl</h2>
+            <p class="text-secondary mb-4">Select your preferences below to build your meal.</p>
+            <div class="bowl-summary" id="bowl-summary">
+                <p id="builder-greeting" class="fw-bold mb-1">Welcome! Enter your name to personalize your bowl.</p>
+                <div class="d-flex align-items-center gap-2 mb-1"><span id="tag-preview" class="tag-preview"></span><span id="sum-name"></span></div>
+                <p id="sum-desc" class="small text-secondary mb-1"></p>
+                <p class="mb-0"><strong id="sum-kcal">0</strong> kcal · <strong id="sum-price">0</strong> ₸</p>
+            </div>
+            <div id="step-progress" class="step-progress"></div>
+            <form action="#" method="post" id="buildForm" novalidate>
+            <div class="form-step is-active" data-step="1">
+<div class="mb-3">
+                <label for="builder-name" class="form-label">Your full name</label>
+                <input type="text" class="form-control" id="builder-name" name="builder-name" placeholder="Nurali Sadykov" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="mb-3">
+                <label for="builder-email" class="form-label">Your email address</label>
+                <input type="email" class="form-control" id="builder-email" name="builder-email" placeholder="example@mail.com" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="mb-3">
+                <label for="builder-password" class="form-label">Create password (to save your meal)</label>
+                <input type="password" class="form-control" id="builder-password" name="builder-password" placeholder="At least 8 characters" autocomplete="new-password" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="mb-3">
+                <label for="builder-confirm" class="form-label">Confirm password</label>
+                <input type="password" class="form-control" id="builder-confirm" name="builder-confirm" placeholder="Repeat your password" autocomplete="new-password" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            </div>
+<div class="form-step" data-step="2">
+<div class="mb-3">
+                <label for="meal-base" class="form-label">Select your base ingredient</label>
+                <select class="form-select" id="meal-base" name="meal-base">
+                    <option value="rice">Brown Rice Bowl</option>
+                    <option value="quinoa">Quinoa Mix</option>
+                    <option value="pasta">Whole Wheat Pasta</option>
+                    <option value="greens">Fresh Salad Greens</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="packaging-color" class="form-label">Choose package tag color</label>
+                <input type="color" class="form-control form-control-color" id="packaging-color" name="packaging-color" value="#285943">
+            </div>
+            <div class="mb-3"><p class="form-label">Extra toppings</p><div id="toppings" class="toppings"></div></div>
+</div>
+<div class="form-step" data-step="3">
+<div class="mb-3">
+                <label for="builder-notes" class="form-label">Special dietary requests / allergies</label>
+                <textarea class="form-control" id="builder-notes" name="builder-notes" rows="4" placeholder="Mention any extra dressing, no onions, or specific preferences..."></textarea>
+            </div>
+            </div>
+            <div class="step-nav">
+                <button type="button" id="step-back" class="btn btn-outline-success">Back</button>
+                <button type="button" id="step-next" class="btn btn-success">Next</button>
+                <button type="button" id="step-reset" class="btn btn-outline-secondary">Reset</button>
+            </div>
+            <div id="formSuccess" class="alert alert-success d-none" role="alert"></div>
+            <button type="submit" id="build-submit" class="btn btn-success btn-lg w-100 d-none">Build &amp; Save Custom Meal</button>
+            </form>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container text-center">
+        <p class="footer-brand">Food Craft</p>
+        <p class="mb-1"><strong>Our group: “Айғырлар”</strong></p>
+        <p class="mb-2">Asanali Kusmangaliev · Nurali Sadykov · Danial Zhambyl</p>
+        <button type="button" class="btn btn-outline-light btn-sm my-2" data-open-modal>Subscribe for updates</button>
+        <p id="datetime-display" class="footer-date mt-3 mb-0" aria-live="polite"></p>
+        <p class="small mt-3 mb-0">© 2026 Food Craft</p>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="subscription-modal" aria-hidden="true">
+    <div class="subscription-modal" role="dialog" aria-modal="true" aria-labelledby="subscription-title">
+        <button type="button" class="modal-close" id="close-subscription" aria-label="Close subscription form">&times;</button>
+        <p class="eyebrow mb-1">STAY INSPIRED</p>
+        <h2 id="subscription-title">Join Food Craft</h2>
+        <p class="text-secondary">Get healthy recipe ideas and updates.</p>
+        <form id="subscription-form" novalidate>
+            <div class="mb-3">
+                <label for="subscriber-name" class="form-label">Your name</label>
+                <input type="text" class="form-control" id="subscriber-name" name="name" required>
+                <div class="invalid-feedback">Please enter your name.</div>
+            </div>
+            <div class="mb-3">
+                <label for="subscriber-email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="subscriber-email" name="email" required>
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+            </div>
+            <div class="mb-3">
+                <label for="subscriber-password" class="form-label">Password (at least 8 characters)</label>
+                <input type="password" class="form-control" id="subscriber-password" name="password" minlength="8" required>
+                <div class="invalid-feedback">Password must contain at least 8 characters.</div>
+            </div>
+            <div class="mb-3">
+                <label for="subscriber-confirm" class="form-label">Confirm password</label>
+                <input type="password" class="form-control" id="subscriber-confirm" name="confirmPassword" required>
+                <div class="invalid-feedback">Passwords must match.</div>
+            </div>
+            <p id="form-message" class="form-message" aria-live="polite"></p>
+            <button type="submit" class="btn btn-success w-100">Create subscription</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+<script src="fx.js"></script>
+<script src="builder.js"></script>
+</body>
+</html>

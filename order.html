@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Order healthy meals from Food Craft for delivery or pickup.">
+    <title>Food Craft - Order Delivery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="builder-order.css">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg bg-foodcraft navbar-dark" aria-label="Main navigation">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Food Craft</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="sportfood.html">Sport Food</a></li>
+                    <li class="nav-item"><a class="nav-link" href="recipes.html">Recipes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="team.html">Our Team</a></li>
+                    <li class="nav-item"><a class="nav-link" href="builder.html">Meal Builder</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="order.html">Order</a></li>
+                    <li class="nav-item ms-lg-3 mt-3 mt-lg-0 color-control">
+                        <button type="button" class="btn btn-sm btn-outline-light" id="bg-color-btn">Change color</button>
+                        <input type="color" id="bg-color-picker" value="#f5f7f2" aria-label="Choose page background color">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section class="page-intro py-5 px-3">
+        <div class="container text-center">
+            <img src="images/foodcraft.jpg" class="logo-image mb-3" alt="Food Craft logo">
+            <p class="eyebrow mb-2">FRESH TO YOUR DOOR</p>
+            <h1 class="mb-3">Order Delivery &amp; Pickup</h1>
+            <p class="lead mx-auto mb-0 intro-text">Get your freshly crafted meals delivered straight to your door or university campus.</p>
+        </div>
+    </section>
+
+    <section class="container pb-4 pb-lg-5">
+        <div class="section-box p-3 p-lg-4">
+            <p class="eyebrow mb-1">WHERE WE DELIVER</p>
+            <h2 class="mb-3">City Delivery Rates &amp; Estimated Time</h2>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle fc-table mb-0">
+                    <thead><tr><th>Delivery Zone</th><th>Average Time</th><th>Minimum Order</th><th>Delivery Fee</th></tr></thead>
+                    <tbody>
+                        <tr><td>Astana IT University Campus</td><td>15 - 20 mins</td><td>1500 ₸</td><td><span class="badge bg-success">Free</span></td></tr>
+                        <tr><td>EXPO &amp; Mega Silk Way Area</td><td>25 - 35 mins</td><td>2500 ₸</td><td>500 ₸</td></tr>
+                        <tr><td>Left Bank Center</td><td>30 - 45 mins</td><td>3000 ₸</td><td>700 ₸</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="container pb-4 pb-lg-5">
+        <div class="section-box p-3 p-lg-4">
+            <p class="eyebrow mb-1">CHOOSE YOUR WAY</p>
+            <h2 class="mb-2">Choose Delivery Option</h2>
+            <p class="text-secondary mb-4">Select how you would like to receive your order.</p>
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="card fc-card h-100 text-center p-3 is-featured">
+                        <div class="display-4 my-2" aria-hidden="true">🚴</div>
+                        <h3 class="card-title">AITU Express</h3>
+                        <p class="card-text flex-grow-1">Direct delivery to AITU classrooms or dorms in 15–20 min.</p>
+                        <p class="price mb-3">700 ₸</p>
+                        <button type="button" class="btn btn-success w-100" data-delivery="express">Select Express</button>
+                    </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="card fc-card h-100 text-center p-3">
+                        <div class="display-4 my-2" aria-hidden="true">🚚</div>
+                        <h3 class="card-title">Standard Delivery</h3>
+                        <p class="card-text flex-grow-1">Regular city courier delivery to your home address (35–45 min).</p>
+                        <p class="price mb-3">500 ₸</p>
+                        <button type="button" class="btn btn-outline-success w-100" data-delivery="standard">Select Standard</button>
+                    </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="card fc-card h-100 text-center p-3">
+                        <div class="display-4 my-2" aria-hidden="true">🥡</div>
+                        <h3 class="card-title">Self-Pickup</h3>
+                        <p class="card-text flex-grow-1">Pick up your order yourself from our nearest kitchen point.</p>
+                        <p class="price mb-3">Free (0 ₸)</p>
+                        <button type="button" class="btn btn-outline-success w-100" data-delivery="pickup">Select Pickup</button>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container pb-4 pb-lg-5">
+        <div class="section-box p-4 p-lg-5">
+            <div class="text-center mb-4">
+                <p class="eyebrow mb-1">NEED A LITTLE HELP?</p>
+                <h2>Delivery FAQ</h2>
+                <p class="text-secondary mb-0">Click a question to reveal the answer.</p>
+            </div>
+            <div class="accordion-container">
+                <article class="faq-item">
+                    <button class="accordion-header" type="button" aria-expanded="false">
+                        <span>How long does delivery take?</span><span class="accordion-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="accordion-content"><p>Inside the Astana IT University campus it takes 15–20 minutes. EXPO and Mega Silk Way take 25–35 minutes, and the Left Bank center takes 30–45 minutes.</p></div>
+                </article>
+                <article class="faq-item">
+                    <button class="accordion-header" type="button" aria-expanded="false">
+                        <span>What is the minimum order amount?</span><span class="accordion-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="accordion-content"><p>It depends on the zone: 1500 ₸ for the AITU campus, 2500 ₸ for EXPO &amp; Mega Silk Way and 3000 ₸ for the Left Bank center.</p></div>
+                </article>
+                <article class="faq-item">
+                    <button class="accordion-header" type="button" aria-expanded="false">
+                        <span>Can I pick up my order myself?</span><span class="accordion-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="accordion-content"><p>Yes. Choose Self-Pickup and collect the meal at our nearest kitchen point. It is free.</p></div>
+                </article>
+                <article class="faq-item">
+                    <button class="accordion-header" type="button" aria-expanded="false">
+                        <span>Which payment methods do you accept?</span><span class="accordion-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="accordion-content"><p>Kaspi QR or bank transfer, a credit card on delivery, or cash to the courier.</p></div>
+                </article>
+                <article class="faq-item">
+                    <button class="accordion-header" type="button" aria-expanded="false">
+                        <span>Can I change or cancel my order?</span><span class="accordion-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="accordion-content"><p>Contact us as soon as possible. Changes are possible until the kitchen starts cooking.</p></div>
+                </article>
+            </div>
+            <div class="text-center mt-4">
+                <p class="text-secondary mb-2">Want news about new delivery zones and offers?</p>
+                <button type="button" class="btn btn-success" data-open-modal>Subscribe for updates</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="order-summary" class="container pb-4 pb-lg-5">
+        <div class="section-box p-3 p-lg-4">
+            <p class="eyebrow mb-1">YOUR ORDER</p>
+            <h2 id="order-greeting" class="mb-3">Build your order</h2>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <label for="zone-select" class="form-label">Delivery zone</label>
+                    <select id="zone-select" class="form-select mb-2"></select>
+                    <p id="zone-info" class="small text-secondary"></p>
+                    <h3 class="h6">Menu</h3>
+                    <div id="menu-list"></div>
+                </div>
+                <div class="col-lg-6">
+                    <h3 class="h6">Your cart</h3>
+                    <ul id="cart-list" class="cart-list"></ul>
+                    <p class="mb-1">Delivery: <strong id="sum-delivery">not selected</strong></p>
+                    <p class="mb-1">Subtotal: <strong id="sum-sub">0 ₸</strong></p>
+                    <p class="mb-2">Total: <strong id="sum-total">0 ₸</strong></p>
+                    <p id="min-warning" class="text-danger small"></p>
+                    <button type="button" id="eta-btn" class="btn btn-outline-success btn-sm">Estimate arrival time</button>
+                    <p id="eta-output" class="small mt-2 mb-0" aria-live="polite"></p>
+                </div>
+            </div>
+            <ol id="order-status" class="status-steps"><li>Accepted</li><li>Cooking</li><li>On the way</li></ol>
+        </div>
+    </section>
+
+    <section class="container pb-4 pb-lg-5">
+        <div class="section-box p-3 p-lg-4">
+            <p class="eyebrow mb-1">ALMOST DONE</p>
+            <h2 class="mb-2">Place Your Delivery Request</h2>
+            <p class="text-secondary mb-4">Fill out the delivery order form below.</p>
+            <form action="#" method="post" id="orderForm" novalidate>
+            <div class="mb-3">
+                <label for="order-customer" class="form-label">Customer name</label>
+                <input type="text" class="form-control" id="order-customer" name="order-customer" placeholder="Nurali Sadykov" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="mb-3">
+                <label for="order-address" class="form-label">Delivery address (street, house, apartment)</label>
+                <input type="text" class="form-control" id="order-address" name="order-address" placeholder="Mangilik El C1" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="mb-3">
+                <label for="payment-option" class="form-label">Payment method</label>
+                <select class="form-select" id="payment-option" name="payment-option">
+                    <option value="kaspi">Kaspi QR / Bank Transfer</option>
+                    <option value="card">Credit Card on Delivery</option>
+                    <option value="cash">Cash to Courier</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="order-comments" class="form-label">Courier instructions</label>
+                <textarea class="form-control" id="order-comments" name="order-comments" rows="3" placeholder="Intercom code, entrance number, call upon arrival..."></textarea>
+            </div>
+            <div id="orderSuccess" class="alert alert-success d-none" role="alert"></div>
+            <button type="button" id="order-reset" class="btn btn-outline-success w-100 mb-2">Reset form</button>
+            <button type="submit" class="btn btn-success btn-lg w-100">Confirm &amp; Send Order</button>
+            </form>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container text-center">
+        <p class="footer-brand">Food Craft</p>
+        <p class="mb-1"><strong>Our group: “Айғырлар”</strong></p>
+        <p class="mb-2">Asanali Kusmangaliev · Nurali Sadykov · Danial Zhambyl</p>
+        <button type="button" class="btn btn-outline-light btn-sm my-2" data-open-modal>Subscribe for updates</button>
+        <p id="datetime-display" class="footer-date mt-3 mb-0" aria-live="polite"></p>
+        <p class="small mt-3 mb-0">© 2026 Food Craft</p>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="subscription-modal" aria-hidden="true">
+    <div class="subscription-modal" role="dialog" aria-modal="true" aria-labelledby="subscription-title">
+        <button type="button" class="modal-close" id="close-subscription" aria-label="Close subscription form">&times;</button>
+        <p class="eyebrow mb-1">STAY INSPIRED</p>
+        <h2 id="subscription-title">Join Food Craft</h2>
+        <p class="text-secondary">Get healthy recipe ideas and updates.</p>
+        <form id="subscription-form" novalidate>
+            <div class="mb-3">
+                <label for="subscriber-name" class="form-label">Your name</label>
+                <input type="text" class="form-control" id="subscriber-name" name="name" required>
+                <div class="invalid-feedback">Please enter your name.</div>
+            </div>
+            <div class="mb-3">
+                <label for="subscriber-email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="subscriber-email" name="email" required>
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+            </div>
+            <div class="mb-3">
+                <label for="subscriber-password" class="form-label">Password (at least 8 characters)</label>
+                <input type="password" class="form-control" id="subscriber-password" name="password" minlength="8" required>
+                <div class="invalid-feedback">Password must contain at least 8 characters.</div>
+            </div>
+            <div class="mb-3">
+                <label for="subscriber-confirm" class="form-label">Confirm password</label>
+                <input type="password" class="form-control" id="subscriber-confirm" name="confirmPassword" required>
+                <div class="invalid-feedback">Passwords must match.</div>
+            </div>
+            <p id="form-message" class="form-message" aria-live="polite"></p>
+            <button type="submit" class="btn btn-success w-100">Create subscription</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+<script src="fx.js"></script>
+<script src="order.js"></script>
+</body>
+</html>

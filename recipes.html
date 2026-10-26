@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Healthy recipes and meal ideas from Food Craft.">
+    <title>Food Craft - Healthy Recipes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg bg-foodcraft navbar-dark" aria-label="Main navigation">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Food Craft</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="sportfood.html">Sport Food</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="recipes.html">Recipes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="team.html">Our Team</a></li>
+                    <li class="nav-item"><a class="nav-link" href="builder.html">Meal Builder</a></li>
+                    <li class="nav-item"><a class="nav-link" href="order.html">Order</a></li>
+                    <li class="nav-item ms-lg-3 mt-3 mt-lg-0 color-control">
+                        <button type="button" class="btn btn-sm btn-outline-light" id="bg-color-btn">Change color</button>
+                        <input type="color" id="bg-color-picker" value="#f5f7f2" aria-label="Choose page background color">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section class="page-intro py-5 px-3">
+        <div class="container text-center">
+            <img src="images/foodcraft.jpg" class="logo-image mb-3" alt="Food Craft logo">
+            <p class="eyebrow mb-2">EAT WELL · FEEL WELL</p>
+            <h1 class="mb-3">Healthy Recipes</h1>
+            <p class="lead mx-auto mb-0 intro-text">Simple and nutritious recipes for an active lifestyle.</p>
+        </div>
+    </section>
+
+    <section class="container py-4 py-lg-5">
+        <div class="section-box p-3 p-lg-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+                <div>
+                    <p class="eyebrow mb-1">FRESH IDEAS FOR EVERY DAY</p>
+                    <h2 class="mb-2">Our Healthy Recipes</h2>
+                    <p class="mb-0 text-secondary">Choose a healthy meal for your day.</p>
+                </div>
+                <div class="btn-group recipe-filters" role="group" aria-label="Recipe categories">
+                    <button type="button" class="btn btn-outline-success active" data-filter="all">All</button>
+                    <button type="button" class="btn btn-outline-success" data-filter="breakfast">Breakfast</button>
+                    <button type="button" class="btn btn-outline-success" data-filter="lunch">Lunch</button>
+                    <button type="button" class="btn btn-outline-success" data-filter="dinner">Dinner</button>
+                </div>
+            </div>
+
+            <p id="recipe-count" class="recipe-count" aria-live="polite"></p>
+
+            <div class="row g-4" id="recipe-list">
+                <div class="col-12 col-md-6 col-lg-4 recipe-item" data-category="breakfast">
+                    <article class="card fc-card h-100">
+                        <img src="images/Protein Pancakes with Berries.jpg" class="card-img-top recipe-card-img" alt="Protein pancakes with berries" loading="lazy">
+                        <div class="card-body p-3 p-lg-4 d-flex flex-column">
+                            <span class="recipe-tag">Breakfast</span>
+                            <h3 class="card-title mt-2">Protein Pancakes</h3>
+                            <p class="card-text">A high-protein breakfast with berries that is suitable for an active lifestyle.</p>
+                            <h4 class="h6 ingredients-title">Ingredients</h4>
+                            <ul class="small ps-3">
+                                <li>2 eggs</li><li>50 g oats</li><li>1 banana</li><li>Fresh berries</li>
+                            </ul>
+                            <a href="order.html" class="btn btn-success w-100 mt-auto">Choose Meal</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 recipe-item" data-category="breakfast">
+                    <article class="card fc-card h-100">
+                        <img src="images/Protein Oatmeal with Banana.jpg" class="card-img-top recipe-card-img" alt="Protein oatmeal with banana" loading="lazy">
+                        <div class="card-body p-3 p-lg-4 d-flex flex-column">
+                            <span class="recipe-tag">Breakfast</span>
+                            <h3 class="card-title mt-2">Banana Protein Oatmeal</h3>
+                            <p class="card-text">A quick breakfast that provides energy before studying or exercising.</p>
+                            <h4 class="h6 ingredients-title">Ingredients</h4>
+                            <ul class="small ps-3">
+                                <li>50 g oats</li><li>1 banana</li><li>200 ml milk</li><li>1 teaspoon honey</li>
+                            </ul>
+                            <a href="order.html" class="btn btn-success w-100 mt-auto">Choose Meal</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 recipe-item" data-category="lunch">
+                    <article class="card fc-card h-100">
+                        <img src="images/Quinoa Power Bowl.jpg" class="card-img-top recipe-card-img" alt="Quinoa power bowl with vegetables" loading="lazy">
+                        <div class="card-body p-3 p-lg-4 d-flex flex-column">
+                            <span class="recipe-tag">Lunch</span>
+                            <h3 class="card-title mt-2">Quinoa Power Bowl</h3>
+                            <p class="card-text">A colorful bowl combining quinoa, vegetables and healthy ingredients.</p>
+                            <h4 class="h6 ingredients-title">Ingredients</h4>
+                            <ul class="small ps-3">
+                                <li>100 g cooked quinoa</li><li>50 g vegetables</li><li>30 g avocado</li><li>1 teaspoon olive oil</li>
+                            </ul>
+                            <a href="order.html" class="btn btn-success w-100 mt-auto">Choose Meal</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 recipe-item" data-category="breakfast">
+                    <article class="card fc-card h-100">
+                        <img src="images/Avocado Toast with Eggs.jpg" class="card-img-top recipe-card-img" alt="Avocado toast with eggs" loading="lazy">
+                        <div class="card-body p-3 p-lg-4 d-flex flex-column">
+                            <span class="recipe-tag">Breakfast</span>
+                            <h3 class="card-title mt-2">Avocado Toast</h3>
+                            <p class="card-text">A simple breakfast with healthy fats, protein and whole-grain bread.</p>
+                            <h4 class="h6 ingredients-title">Ingredients</h4>
+                            <ul class="small ps-3">
+                                <li>Whole-grain bread</li><li>1 avocado</li><li>2 eggs</li><li>Black pepper</li>
+                            </ul>
+                            <a href="order.html" class="btn btn-success w-100 mt-auto">Choose Meal</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 recipe-item" data-category="dinner">
+                    <article class="card fc-card h-100">
+                        <img src="images/Baked Salmon with Vegetables.jpg" class="card-img-top recipe-card-img" alt="Baked salmon with vegetables" loading="lazy">
+                        <div class="card-body p-3 p-lg-4 d-flex flex-column">
+                            <span class="recipe-tag">Dinner</span>
+                            <h3 class="card-title mt-2">Baked Salmon</h3>
+                            <p class="card-text">Salmon with vegetables is a nutritious meal rich in protein and healthy fats.</p>
+                            <h4 class="h6 ingredients-title">Ingredients</h4>
+                            <ul class="small ps-3">
+                                <li>Salmon fillet</li><li>Broccoli</li><li>Carrots</li><li>Olive oil</li>
+                            </ul>
+                            <a href="order.html" class="btn btn-success w-100 mt-auto">Choose Meal</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 recipe-item" data-category="dinner">
+                    <article class="card fc-card h-100">
+                        <img src="images/Chia Seed Pudding.jpg" class="card-img-top recipe-card-img" alt="Chia seed pudding" loading="lazy">
+                        <div class="card-body p-3 p-lg-4 d-flex flex-column">
+                            <span class="recipe-tag">Dinner</span>
+                            <h3 class="card-title mt-2">Chia Seed Pudding</h3>
+                            <p class="card-text">A light and nutritious evening dessert made with chia seeds and fruit.</p>
+                            <h4 class="h6 ingredients-title">Ingredients</h4>
+                            <ul class="small ps-3">
+                                <li>3 tablespoons chia seeds</li><li>200 ml milk</li><li>Fresh berries</li><li>1 teaspoon honey</li>
+                            </ul>
+                            <a href="order.html" class="btn btn-success w-100 mt-auto">Choose Meal</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <p id="no-recipes" class="text-center text-secondary mt-4 d-none">No recipes in this category yet.</p>
+
+            <div class="text-center mt-4">
+                <button type="button" class="btn btn-outline-success px-4" id="load-more-btn">Load more recipes</button>
+                <p id="load-status" class="small text-secondary mt-2 mb-0" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container pb-4 pb-lg-5">
+        <div class="section-box p-4 p-lg-5">
+            <div class="text-center mb-4">
+                <p class="eyebrow mb-1">NEED A LITTLE HELP?</p>
+                <h2>Frequently Asked Questions</h2>
+                <p class="text-secondary mb-0">Click a question to reveal the answer.</p>
+            </div>
+            <div class="accordion-container">
+                <article class="faq-item">
+                    <button class="accordion-header" type="button" aria-expanded="false">
+                        <span>How do I order?</span><span class="accordion-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="accordion-content"><p>You can order by clicking the “Choose Meal” button on any recipe card. It will take you to our order page.</p></div>
+                </article>
+                <article class="faq-item">
+                    <button class="accordion-header" type="button" aria-expanded="false">
+                        <span>Are these recipes suitable for an active lifestyle?</span><span class="accordion-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="accordion-content"><p>These recipe ideas include a variety of ingredients and can be adapted to your preferences and needs.</p></div>
+                </article>
+                <article class="faq-item">
+                    <button class="accordion-header" type="button" aria-expanded="false">
+                        <span>Can I change the page background?</span><span class="accordion-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="accordion-content"><p>Yes. Click “Change color” in the navigation bar to cycle through colors, or use the color picker to choose your own.</p></div>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container text-center">
+        <p class="footer-brand">Food Craft</p>
+        <p class="mb-1"><strong>Our group: “Айғырлар”</strong></p>
+        <p class="mb-2">Asanali Kusmangaliev · Nurali Sadykov · Danial Zhambyl</p>
+        <button type="button" class="btn btn-outline-light btn-sm my-2" data-open-modal>Subscribe for updates</button>
+        <p id="datetime-display" class="footer-date mt-3 mb-0" aria-live="polite"></p>
+        <p class="small mt-3 mb-0">© 2026 Food Craft</p>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="subscription-modal" aria-hidden="true">
+    <div class="subscription-modal" role="dialog" aria-modal="true" aria-labelledby="subscription-title">
+        <button type="button" class="modal-close" id="close-subscription" aria-label="Close subscription form">&times;</button>
+        <p class="eyebrow mb-1">STAY INSPIRED</p>
+        <h2 id="subscription-title">Join Food Craft</h2>
+        <p class="text-secondary">Get healthy recipe ideas and updates.</p>
+        <form id="subscription-form" novalidate>
+            <div class="mb-3">
+                <label for="subscriber-name" class="form-label">Your name</label>
+                <input type="text" class="form-control" id="subscriber-name" name="name" required>
+                <div class="invalid-feedback">Please enter your name.</div>
+            </div>
+            <div class="mb-3">
+                <label for="subscriber-email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="subscriber-email" name="email" required>
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+            </div>
+            <div class="mb-3">
+                <label for="subscriber-password" class="form-label">Password (at least 8 characters)</label>
+                <input type="password" class="form-control" id="subscriber-password" name="password" minlength="8" required>
+                <div class="invalid-feedback">Password must contain at least 8 characters.</div>
+            </div>
+            <div class="mb-3">
+                <label for="subscriber-confirm" class="form-label">Confirm password</label>
+                <input type="password" class="form-control" id="subscriber-confirm" name="confirmPassword" required>
+                <div class="invalid-feedback">Passwords must match.</div>
+            </div>
+            <p id="form-message" class="form-message" aria-live="polite"></p>
+            <button type="submit" class="btn btn-success w-100">Create subscription</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

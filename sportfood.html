@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Craft - Sport Food</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-grid">
+    <header id="main-header">
+        <div><h1>Food Craft</h1></div>
+        <nav aria-label="Main menu">
+            <a href="index.html" id="home" data-i18n="navHome">Home</a>
+            <a href="sportfood.html" id="sportfood" data-i18n="navSport">Sport Food</a>
+            <a href="order.html" id="order" data-i18n="navOrder">Order</a>
+            <a href="builder.html" id="builder" data-i18n="navBuilder">Builder</a>
+            <a href="recipes.html" id="resipes" data-i18n="navRecipes">Recipes</a>
+            <a href="team.html" id="team" data-i18n="navTeam">Our Team</a>
+            <button type="button" id="theme-btn" class="theme-btn" aria-label="Switch Day or Night theme">🌙 Night</button>
+            <select id="langSelect" aria-label="Language"><option value="en">EN</option><option value="ru">RU</option><option value="kk">KZ</option></select>
+            <input type="color" id="fav-color" name="fav-color" value="#2c3e50" aria-label="Theme color">
+        </nav>
+    </header>
+
+    <main>
+        <section class="info">
+            <h2 data-i18n="guideTitle">Sports Nutrition Guide</h2>
+            <p>Check out our recommended meal options for optimal workout performance:</p>
+            <img src="images/healthy-meal.jpg" alt="Healthy meal" id="healthy-meal">
+            <table class="food-table">
+                <thead><tr><th>Meal Name</th><th>Calories (kcal)</th><th>Protein (g)</th><th>Best For</th></tr></thead>
+                <tbody>
+                    <tr><td>Protein Oatmeal with Banana</td><td>350</td><td>25</td><td>Pre-Workout Breakfast</td></tr>
+                    <tr><td>Grilled Chicken &amp; Rice</td><td>520</td><td>45</td><td>Post-Workout Muscle Gain</td></tr>
+                    <tr><td>Greek Yogurt Shake</td><td>280</td><td>30</td><td>Quick Recovery Snack</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card-row">
+            <div id="mealFilters" class="meal-filters">
+                <button type="button" class="meal-filter submit-btn active" data-cat="all" data-i18n="all">All</button>
+                <button type="button" class="meal-filter submit-btn" data-cat="breakfast" data-i18n="breakfast">Breakfast</button>
+                <button type="button" class="meal-filter submit-btn" data-cat="post-workout" data-i18n="post">Post-Workout</button>
+                <button type="button" class="meal-filter submit-btn" data-cat="snack" data-i18n="snack">Snack</button>
+            </div>
+            <div id="mealGrid" class="meal-grid"></div>
+            <button type="button" id="loadMoreBtn" class="submit-btn" data-i18n="loadMore">Load more meals</button>
+            <button type="button" id="openPopupBtn" class="submit-btn" data-i18n="offerBtn">Open Special Offer</button>
+            <p id="loadMsg" class="load-msg" role="status"></p>
+        </section>
+
+        <section class="reason">
+            <h2 data-i18n="orderTitle">Custom Nutrition Order</h2>
+            <p id="stepIndicator" class="step-indicator"></p>
+            <form action="#" method="post" class="order-form" id="orderForm" novalidate>
+                <div class="form-step">
+                    <div class="form-group"><label for="username" data-i18n="labelName">Your Name:</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your full name" required></div>
+                    <div class="form-group"><label for="email" data-i18n="labelEmail">Your Email:</label>
+                        <input type="email" id="email" name="email" placeholder="example@mail.com" required></div>
+                </div>
+                <div class="form-step hidden">
+                    <div class="form-group"><label for="fitness-goal" data-i18n="labelGoal">Fitness Goal:</label>
+                        <select id="fitness-goal" name="fitness-goal">
+                            <option value="muscle">Muscle Gain</option><option value="weight-loss">Weight Loss</option><option value="endurance">Endurance</option>
+                        </select></div>
+                    <div class="form-group"><label for="comments">Special Preferences or Allergies:</label>
+                        <textarea id="comments" name="comments" rows="4" placeholder="Tell us about your preferences..."></textarea></div>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" id="backBtn" class="submit-btn" data-i18n="back">Back</button>
+                    <button type="button" id="nextBtn" class="submit-btn" data-i18n="next">Next</button>
+                    <button type="submit" id="sendBtn" class="submit-btn hidden" data-i18n="send">Send Request</button>
+                    <button type="button" id="resetBtn" class="submit-btn reset-btn" data-i18n="reset">Reset</button>
+                </div>
+                <p id="formMsg" role="status"></p>
+            </form>
+        </section>
+
+        <section class="reason faq">
+            <h2 data-i18n="faqTitle">Frequently Asked Questions (FAQ)</h2>
+            <div class="accordion-item">
+                <button type="button" class="accordion-header">What is included in the custom nutrition order?</button>
+                <div class="accordion-body hidden"><p>Our custom nutrition plan includes a personalized macro breakdown, a meal schedule tailored to your fitness goals, and daily calorie targets.</p></div>
+            </div>
+            <div class="accordion-item">
+                <button type="button" class="accordion-header">How do I track my calories using Food Craft?</button>
+                <div class="accordion-body hidden"><p>Add meals to My Nutrition on the Sport Food page and the totals are calculated for you.</p></div>
+            </div>
+            <div class="accordion-item">
+                <button type="button" class="accordion-header">Can I change my fitness goal later?</button>
+                <div class="accordion-body hidden"><p>Yes, you can update your preferences and fitness goals anytime by filling out our custom order form again.</p></div>
+            </div>
+        </section>
+    </main>
+    <aside class="sidebar">
+        <section class="goal-filter-section">
+            <h3 data-i18n="filterTitle">Filter by Goal</h3>
+            <p class="goal-note">Choose a goal to learn more about your interests!</p>
+            <div class="goal-buttons">
+                <button type="button" class="goal-btn submit-btn" data-goal="muscle">Muscle Gain</button>
+                <button type="button" class="goal-btn submit-btn" data-goal="weight">Weight Loss</button>
+                <button type="button" class="goal-btn submit-btn" data-goal="endurance">Endurance</button>
+            </div>
+            <div id="goal-info-box" class="hidden"><h4 id="goal-title"></h4><p id="goal-text"></p></div>
+        </section>
+        <section class="goal-filter-section nutrition-section">
+            <h3 data-i18n="nutritionTitle">My Nutrition</h3>
+            <ul id="nutritionList" class="nutrition-list"></ul>
+            <p class="totals"><span data-i18n="total">Total</span>: <b id="totalCalories">0</b> kcal · <b id="totalProtein">0</b> g</p>
+            <div class="calorie-track" aria-hidden="true"><div id="calorieBar" class="calorie-bar"></div></div>
+            <button type="button" id="clearNutritionBtn" class="submit-btn" data-i18n="clearBtn">Clear all</button>
+        </section>
+    </aside>
+
+    <footer>
+        <p><b>Our group is called: "Айғырлар"</b><br><b>In our group there are 3 persons:</b></p>
+        <ol>
+            <li>Asanali Kusmangaliev</li>
+            <li>Nurali Sadykov</li>
+            <li>Danial Zhambyl</li>
+        </ol>
+        <p><b>2026 Food Craft</b></p>
+    </footer>
+    <div id="customPopup" class="popup-overlay hidden">
+        <div class="popup-box">
+            <h3>Special Discount!</h3>
+            <p>Get 20% off on your first custom nutrition order by subscribing today.</p>
+            <button type="button" id="closePopupBtn" class="submit-btn popup-close">Close</button>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>

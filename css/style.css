@@ -1,0 +1,256 @@
+
+body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: whitesmoke; color: darkslategray; line-height: 1.6; transition: background-color 0.4s ease, color 0.4s ease; }
+body.page-grid { display: grid; grid-template-areas: "header header" "sidebar main" "footer footer"; grid-template-columns: 240px 1fr; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+#main-header { grid-area: header; background-color: darkblue; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.sidebar { grid-area: sidebar; background-color: white; padding: 1.5rem; border-right: 2px solid darkblue; }
+main { grid-area: main; padding: 2rem; max-width: 900px; margin: 0 auto; background-color: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
+footer { grid-area: footer; background-color: darkblue; color: white; text-align: center; padding: 1.5rem; margin-top: 3rem; }
+footer ol { display: inline-block; text-align: left; padding-left: 20px; }
+h1, h2, h3 { color: midnightblue; }
+#main-header h1 { color: white; }
+nav { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+#main-header nav a { color: white; text-decoration: none; font-weight: bold; transition: color 0.3s ease; padding: 2px 4px; }
+#main-header nav a:hover, #main-header nav a:focus { color: crimson; outline: 2px solid white; }
+#home { border-bottom: 2px solid crimson; }
+#sportfood { color: lightyellow; }
+:focus-visible { outline: 2px solid crimson; outline-offset: 2px; }
+.info { text-align: center; margin-bottom: 2rem; }
+.reason { background-color: snow; padding: 1.5rem; border-radius: 6px; border-left: 5px solid darkblue; margin-bottom: 1.5rem; }
+img { max-width: 100%; border-radius: 50%; display: block; margin: 20px auto; width: 220px; height: 220px; object-fit: cover; border: 4px solid midnightblue; }
+#healthy-meal { width: 500px; height: 200px; border-radius: 10pt; }
+.hidden { display: none !important; }
+
+.food-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.95rem; }
+.food-table th, .food-table td { padding: 12px 15px; border: 1px solid lightgray; text-align: left; }
+.food-table th { background-color: darkblue; color: white; }
+
+
+.order-form { display: flex; flex-direction: column; gap: 15px; }
+.form-step { display: flex; flex-direction: column; gap: 15px; animation: fadeUp 0.4s ease; }
+.form-group { display: flex; flex-direction: column; text-align: left; }
+.form-group label { margin-bottom: 5px; font-weight: bold; color: midnightblue; }
+.form-group input, .form-group select, .form-group textarea, .name-form input { padding: 10px; border: 1px solid gray; border-radius: 4px; font-size: 1rem; background-color: snow; }
+.invalid { border-color: crimson !important; }
+.form-buttons, .meal-filters, .name-form { display: flex; gap: 10px; flex-wrap: wrap; }
+.name-form { justify-content: center; margin-bottom: 1rem; }
+.step-indicator { font-weight: bold; color: crimson; margin: 0 0 10px; }
+#formMsg, .load-msg { margin: 0; font-weight: bold; min-height: 1.4em; }
+.ok { color: seagreen; } .err { color: crimson; }
+.submit-btn { background-color: darkblue; color: white; padding: 10px 14px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease, transform 0.15s ease; }
+.submit-btn:hover { background-color: crimson; transform: translateY(-2px); }
+.submit-btn:disabled { background-color: gray; cursor: not-allowed; transform: none; }
+.reset-btn { background-color: gray; }
+.meal-filter.active { background-color: crimson; }
+
+
+.theme-btn { background: transparent; color: white; border: 2px solid white; border-radius: 20px; padding: 6px 14px; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease; }
+.theme-btn:hover { background: white; color: darkblue; }
+#langSelect { padding: 5px; border-radius: 4px; }
+#live-clock { display: flex; gap: 10px; align-items: center; font-size: 14px; }
+#clock-time { font-weight: bold; }
+.greeting { font-size: 1.2rem; }
+.time-out { margin-left: 10px; font-weight: bold; color: crimson; }
+
+.card-row { margin: 2rem 0; }
+.meal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px; margin: 1rem 0; }
+.card { display: flex; flex-direction: column; background-color: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; animation: fadeUp 0.5s ease; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); }
+.card img { width: 100%; height: 160px; border-radius: 8px; object-fit: cover; margin: 0 0 10px; border: none; }
+.card p { flex-grow: 1; margin: 0 0 6px; }
+.meal-macros { display: block; font-weight: bold; color: midnightblue; margin-bottom: 6px; }
+.badge { display: inline-block; background: gold; color: #333; border-radius: 10px; padding: 0 8px; font-size: 12px; margin-left: 6px; }
+.add-btn { margin-top: auto; }
+.card.added { animation: pulse 0.6s ease; }
+.rating { display: flex; justify-content: center; gap: 4px; margin-bottom: 4px; }
+.star { font-size: 1.8rem; color: lightgray; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; user-select: none; }
+.star:hover { transform: scale(1.3); }
+.star.selected { color: gold; }
+.rating-text { text-align: center; font-size: 14px; color: gray; margin-bottom: 10px; }
+
+
+.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 180px); gap: 15px; margin-top: 1rem; }
+.gallery-item { position: relative; overflow: hidden; border-radius: 8px; }
+.gallery-item img { width: 100%; height: 180px; object-fit: cover; display: block; border-radius: 0; margin: 0; border: none; transition: transform 0.4s ease; }
+.gallery-item:hover img { transform: scale(1.1); }
+.gallery-item .caption { position: absolute; bottom: 0; left: 0; right: 0; background-color: rgba(0, 0, 0, 0.65); color: white; text-align: center; padding: 10px; font-weight: bold; opacity: 0; transition: opacity 0.3s ease; }
+.gallery-item:hover .caption { opacity: 1; }
+
+.accordion-item { border: 1px solid lightgray; border-radius: 6px; overflow: hidden; margin-bottom: 0.5rem; }
+.accordion-header { width: 100%; text-align: left; padding: 12px 15px; background-color: white; border: none; font: bold 1rem Arial, sans-serif; cursor: pointer; color: midnightblue; }
+.accordion-body { padding: 12px 15px; background-color: snow; animation: fadeUp 0.3s ease; }
+.accordion-body p { margin: 0; }
+
+.goal-filter-section { background: snow; border-radius: 8px; border: 1px solid lightgray; padding: 1rem; margin-bottom: 1rem; }
+.goal-note { font-size: 14px; color: gray; }
+.goal-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; }
+#goal-info-box { padding: 15px; background: white; border-radius: 6px; border-left: 4px solid midnightblue; animation: fadeUp 0.3s ease; }
+#goal-info-box h4 { margin: 0 0 5px; color: midnightblue; }
+#goal-info-box p { margin: 0; font-size: 14px; }
+.nutrition-list { list-style: none; padding: 0; margin: 0 0 10px; font-size: 14px; }
+.nutrition-list li { display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px dashed lightgray; animation: slideIn 0.35s ease; }
+.remove-btn { background: none; border: none; color: crimson; cursor: pointer; font-size: 16px; }
+.totals { margin: 6px 0; }
+.calorie-track { height: 10px; background: lightgray; border-radius: 5px; overflow: hidden; margin-bottom: 10px; }
+.calorie-bar { width: 0; height: 100%; background: seagreen; transition: width 0.6s ease; }
+
+
+.popup-overlay { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center; }
+.popup-box { background: white; padding: 30px; border-radius: 8px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); animation: pop 0.35s ease; }
+.popup-box h3 { margin-top: 0; }
+.popup-close { background-color: crimson; margin-top: 10px; }
+
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: none; } }
+@keyframes pop { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+@keyframes pulse { 0% { transform: scale(1); } 40% { transform: scale(1.05); box-shadow: 0 0 20px seagreen; } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+body.night { background-color: #10131c; color: #dfe3ee; }
+body.night h2, body.night h3, body.night h4, body.night .info h1 { color: #9db4ff; }
+body.night main, body.night .sidebar, body.night .card, body.night .popup-box, body.night .goal-filter-section, body.night #goal-info-box { background-color: #1a1f2e; color: #dfe3ee; }
+body.night .reason, body.night .accordion-body { background-color: #222839; }
+body.night .accordion-header { background-color: #1a1f2e; color: #9db4ff; }
+body.night .accordion-item, body.night .food-table th, body.night .food-table td, body.night .nutrition-list li { border-color: #3a4258; }
+body.night .form-group input, body.night .form-group select, body.night .form-group textarea, body.night .name-form input { background-color: #222839; color: #dfe3ee; border-color: #555; }
+body.night .form-group label, body.night .meal-macros { color: #9db4ff; }
+body.night .goal-note, body.night .rating-text { color: #9aa3b8; }
+body.night .star { color: #3a4258; } body.night .star.selected { color: gold; }
+body.night .calorie-track { background: #3a4258; }
+
+
+@media (max-width: 768px) {
+    #main-header { flex-direction: column; text-align: center; }
+    .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+    body.page-grid { grid-template-areas: "header" "main" "sidebar" "footer"; grid-template-columns: 1fr; grid-template-rows: auto auto auto auto; }
+    main { max-width: none; margin: 0; }
+    .sidebar { border-right: none; border-bottom: 2px solid darkblue; }
+    #healthy-meal { width: 100%; }
+}
+
+body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: whitesmoke; color: darkslategray; line-height: 1.6; transition: background-color 0.4s ease, color 0.4s ease; }
+body.page-grid { display: grid; grid-template-areas: "header header" "sidebar main" "footer footer"; grid-template-columns: 240px 1fr; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+#main-header { grid-area: header; background-color: darkblue; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.sidebar { grid-area: sidebar; background-color: white; padding: 1.5rem; border-right: 2px solid darkblue; }
+main { grid-area: main; padding: 2rem; max-width: 900px; margin: 0 auto; background-color: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
+footer { grid-area: footer; background-color: darkblue; color: white; text-align: center; padding: 1.5rem; margin-top: 3rem; }
+footer ol { display: inline-block; text-align: left; padding-left: 20px; }
+h1, h2, h3 { color: midnightblue; }
+#main-header h1 { color: white; }
+nav { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+#main-header nav a { color: white; text-decoration: none; font-weight: bold; transition: color 0.3s ease; padding: 2px 4px; }
+#main-header nav a:hover, #main-header nav a:focus { color: crimson; outline: 2px solid white; }
+#home { border-bottom: 2px solid crimson; }
+#sportfood { color: lightyellow; }
+:focus-visible { outline: 2px solid crimson; outline-offset: 2px; }
+.info { text-align: center; margin-bottom: 2rem; }
+.reason { background-color: snow; padding: 1.5rem; border-radius: 6px; border-left: 5px solid darkblue; margin-bottom: 1.5rem; }
+img { max-width: 100%; border-radius: 50%; display: block; margin: 20px auto; width: 220px; height: 220px; object-fit: cover; border: 4px solid midnightblue; }
+#healthy-meal { width: 500px; height: 200px; border-radius: 10pt; }
+.hidden { display: none !important; }
+
+
+.food-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.95rem; }
+.food-table th, .food-table td { padding: 12px 15px; border: 1px solid lightgray; text-align: left; }
+.food-table th { background-color: darkblue; color: white; }
+
+.order-form { display: flex; flex-direction: column; gap: 15px; }
+.form-step { display: flex; flex-direction: column; gap: 15px; animation: fadeUp 0.4s ease; }
+.form-group { display: flex; flex-direction: column; text-align: left; }
+.form-group label { margin-bottom: 5px; font-weight: bold; color: midnightblue; }
+.form-group input, .form-group select, .form-group textarea, .name-form input { padding: 10px; border: 1px solid gray; border-radius: 4px; font-size: 1rem; background-color: snow; }
+.invalid { border-color: crimson !important; }
+.form-buttons, .meal-filters, .name-form { display: flex; gap: 10px; flex-wrap: wrap; }
+.name-form { justify-content: center; margin-bottom: 1rem; }
+.step-indicator { font-weight: bold; color: crimson; margin: 0 0 10px; }
+#formMsg, .load-msg { margin: 0; font-weight: bold; min-height: 1.4em; }
+.ok { color: seagreen; } .err { color: crimson; }
+.submit-btn { background-color: darkblue; color: white; padding: 10px 14px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease, transform 0.15s ease; }
+.submit-btn:hover { background-color: crimson; transform: translateY(-2px); }
+.submit-btn:disabled { background-color: gray; cursor: not-allowed; transform: none; }
+.reset-btn { background-color: gray; }
+.meal-filter.active { background-color: crimson; }
+
+.theme-btn { background: transparent; color: white; border: 2px solid white; border-radius: 20px; padding: 6px 14px; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease; }
+.theme-btn:hover { background: white; color: darkblue; }
+#langSelect { padding: 5px; border-radius: 4px; }
+#live-clock { display: flex; gap: 10px; align-items: center; font-size: 14px; }
+#clock-time { font-weight: bold; }
+.greeting { font-size: 1.2rem; }
+.time-out { margin-left: 10px; font-weight: bold; color: crimson; }
+
+
+.card-row { margin: 2rem 0; }
+.meal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px; margin: 1rem 0; }
+.card { display: flex; flex-direction: column; background-color: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; animation: fadeUp 0.5s ease; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); }
+.card img { width: 100%; height: 160px; border-radius: 8px; object-fit: cover; margin: 0 0 10px; border: none; }
+.card p { flex-grow: 1; margin: 0 0 6px; }
+.meal-macros { display: block; font-weight: bold; color: midnightblue; margin-bottom: 6px; }
+.badge { display: inline-block; background: gold; color: #333; border-radius: 10px; padding: 0 8px; font-size: 12px; margin-left: 6px; }
+.add-btn { margin-top: auto; }
+.card.added { animation: pulse 0.6s ease; }
+.rating { display: flex; justify-content: center; gap: 4px; margin-bottom: 4px; }
+.star { font-size: 1.8rem; color: lightgray; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; user-select: none; }
+.star:hover { transform: scale(1.3); }
+.star.selected { color: gold; }
+.rating-text { text-align: center; font-size: 14px; color: gray; margin-bottom: 10px; }
+
+.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 180px); gap: 15px; margin-top: 1rem; }
+.gallery-item { position: relative; overflow: hidden; border-radius: 8px; }
+.gallery-item img { width: 100%; height: 180px; object-fit: cover; display: block; border-radius: 0; margin: 0; border: none; transition: transform 0.4s ease; }
+.gallery-item:hover img { transform: scale(1.1); }
+.gallery-item .caption { position: absolute; bottom: 0; left: 0; right: 0; background-color: rgba(0, 0, 0, 0.65); color: white; text-align: center; padding: 10px; font-weight: bold; opacity: 0; transition: opacity 0.3s ease; }
+.gallery-item:hover .caption { opacity: 1; }
+
+.accordion-item { border: 1px solid lightgray; border-radius: 6px; overflow: hidden; margin-bottom: 0.5rem; }
+.accordion-header { width: 100%; text-align: left; padding: 12px 15px; background-color: white; border: none; font: bold 1rem Arial, sans-serif; cursor: pointer; color: midnightblue; }
+.accordion-body { padding: 12px 15px; background-color: snow; animation: fadeUp 0.3s ease; }
+.accordion-body p { margin: 0; }
+
+.goal-filter-section { background: snow; border-radius: 8px; border: 1px solid lightgray; padding: 1rem; margin-bottom: 1rem; }
+.goal-note { font-size: 14px; color: gray; }
+.goal-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; }
+#goal-info-box { padding: 15px; background: white; border-radius: 6px; border-left: 4px solid midnightblue; animation: fadeUp 0.3s ease; }
+#goal-info-box h4 { margin: 0 0 5px; color: midnightblue; }
+#goal-info-box p { margin: 0; font-size: 14px; }
+.nutrition-list { list-style: none; padding: 0; margin: 0 0 10px; font-size: 14px; }
+.nutrition-list li { display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px dashed lightgray; animation: slideIn 0.35s ease; }
+.remove-btn { background: none; border: none; color: crimson; cursor: pointer; font-size: 16px; }
+.totals { margin: 6px 0; }
+.calorie-track { height: 10px; background: lightgray; border-radius: 5px; overflow: hidden; margin-bottom: 10px; }
+.calorie-bar { width: 0; height: 100%; background: seagreen; transition: width 0.6s ease; }
+
+.popup-overlay { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center; }
+.popup-box { background: white; padding: 30px; border-radius: 8px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); animation: pop 0.35s ease; }
+.popup-box h3 { margin-top: 0; }
+.popup-close { background-color: crimson; margin-top: 10px; }
+
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: none; } }
+@keyframes pop { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+@keyframes pulse { 0% { transform: scale(1); } 40% { transform: scale(1.05); box-shadow: 0 0 20px seagreen; } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+
+body.night { background-color: #10131c; color: #dfe3ee; }
+body.night h2, body.night h3, body.night h4, body.night .info h1 { color: #9db4ff; }
+body.night main, body.night .sidebar, body.night .card, body.night .popup-box, body.night .goal-filter-section, body.night #goal-info-box { background-color: #1a1f2e; color: #dfe3ee; }
+body.night .reason, body.night .accordion-body { background-color: #222839; }
+body.night .accordion-header { background-color: #1a1f2e; color: #9db4ff; }
+body.night .accordion-item, body.night .food-table th, body.night .food-table td, body.night .nutrition-list li { border-color: #3a4258; }
+body.night .form-group input, body.night .form-group select, body.night .form-group textarea, body.night .name-form input { background-color: #222839; color: #dfe3ee; border-color: #555; }
+body.night .form-group label, body.night .meal-macros { color: #9db4ff; }
+body.night .goal-note, body.night .rating-text { color: #9aa3b8; }
+body.night .star { color: #3a4258; } body.night .star.selected { color: gold; }
+body.night .calorie-track { background: #3a4258; }
+
+@media (max-width: 768px) {
+    #main-header { flex-direction: column; text-align: center; }
+    .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+    body.page-grid { grid-template-areas: "header" "main" "sidebar" "footer"; grid-template-columns: 1fr; grid-template-rows: auto auto auto auto; }
+    main { max-width: none; margin: 0; }
+    .sidebar { border-right: none; border-bottom: 2px solid darkblue; }
+    #healthy-meal { width: 100%; }
+}

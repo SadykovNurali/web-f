@@ -1,0 +1,56 @@
+[
+  {
+    "title": "Greek Yogurt Parfait",
+    "category": "breakfast",
+    "categoryLabel": "Breakfast",
+    "description": "Layers of yogurt, granola and fruit for a light and protein-rich start of the day.",
+    "ingredients": ["200 g Greek yogurt", "30 g granola", "Fresh berries", "1 teaspoon honey"],
+    "image": "images/Greek Yogurt Parfait.jpg",
+    "alt": "Greek yogurt parfait with berries"
+  },
+  {
+    "title": "Chicken Rice Bowl",
+    "category": "lunch",
+    "categoryLabel": "Lunch",
+    "description": "Grilled chicken with rice and vegetables, a classic balanced lunch after training.",
+    "ingredients": ["150 g chicken breast", "100 g cooked rice", "Cucumber", "Cherry tomatoes"],
+    "image": "images/Chicken Rice Bowl.jpg",
+    "alt": "Chicken rice bowl with vegetables"
+  },
+  {
+    "title": "Turkey Veggie Wrap",
+    "category": "lunch",
+    "categoryLabel": "Lunch",
+    "description": "A quick whole-grain wrap filled with lean turkey and crunchy vegetables.",
+    "ingredients": ["Whole-grain tortilla", "100 g turkey", "Lettuce", "Greek yogurt sauce"],
+    "image": "images/Turkey Veggie Wrap.jpg",
+    "alt": "Turkey veggie wrap"
+  },
+  {
+    "title": "Lentil Soup",
+    "category": "dinner",
+    "categoryLabel": "Dinner",
+    "description": "A warm and filling plant-based soup with plenty of fiber and protein.",
+    "ingredients": ["100 g red lentils", "1 carrot", "1 onion", "Cumin"],
+    "image": "images/Lentil Soup.jpg",
+    "alt": "Bowl of lentil soup"
+  },
+  {
+    "title": "Veggie Omelette",
+    "category": "breakfast",
+    "categoryLabel": "Breakfast",
+    "description": "Fluffy eggs with spinach and tomatoes, ready in ten minutes.",
+    "ingredients": ["3 eggs", "Spinach", "1 tomato", "Black pepper"],
+    "image": "images/Veggie Omelette.jpg",
+    "alt": "Veggie omelette"
+  },
+  {
+    "title": "Grilled Chicken Salad",
+    "category": "dinner",
+    "categoryLabel": "Dinner",
+    "description": "A light evening salad with grilled chicken, greens and olive oil.",
+    "ingredients": ["120 g chicken breast", "Mixed greens", "Cucumber", "1 teaspoon olive oil"],
+    "image": "images/Grilled Chicken Salad.jpg",
+    "alt": "Grilled chicken salad"
+  }
+]
