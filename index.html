@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Craft - Welcome page</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
 </head>
 <body>
     <header id="main-header">
@@ -12,13 +13,15 @@
         <nav aria-label="Main menu">
             <a href="index.html" id="home" data-i18n="navHome">Home</a>
             <a href="sportfood.html" id="sportfood" data-i18n="navSport">Sport Food</a>
-            <a href="order.html" id="order" data-i18n="navOrder">Order</a>
-            <a href="builder.html" id="builder" data-i18n="navBuilder">Builder</a>
             <a href="recipes.html" id="resipes" data-i18n="navRecipes">Recipes</a>
-            <a href="team.html" id="team" data-i18n="navTeam">Our Team</a>
+            <a href="builder.html" id="builder" data-i18n="navBuilder">Builder</a>
+            <a href="order.html" id="order" data-i18n="navOrder">Order</a>
+            <a href="team.html" id="team" data-i18n="navTeam">Team</a>
             <button type="button" id="theme-btn" class="theme-btn" aria-label="Switch Day or Night theme">🌙 Night</button>
             <select id="langSelect" aria-label="Language"><option value="en">EN</option><option value="ru">RU</option><option value="kk">KZ</option></select>
-            <input type="color" id="fav-color" name="fav-color" value="#2c3e50" aria-label="Theme color">
+
+
+            <input type="color" id="fav-color" name="fav-color" value="#285943" aria-label="Theme color">
         </nav>
         <div id="live-clock"><span id="clock-date"></span><span>|</span><span id="clock-time"></span></div>
     </header>
@@ -32,8 +35,6 @@
                 <button type="submit" class="submit-btn" data-i18n="greetBtn">Greet me</button>
             </form>
             <p><b>On our website you can choose sport and daily meals with their calories.</b></p>
-            <button type="button" id="timeBtn" class="submit-btn" data-i18n="timeBtn">Show current time</button>
-            <span id="timeOut" class="time-out"></span>
             <img src="images/foodcraft.jpg" alt="Our photo">
         </section>
 
@@ -46,19 +47,28 @@
             </ul>
         </section>
 
+        <section class="stats">
+            <h2>Food Craft in numbers</h2>
+            <div class="stats-grid">
+                <div class="stat-card"><p class="stat-number" data-target="9">0</p><p class="stat-label">Healthy meals</p></div>
+                <div class="stat-card"><p class="stat-number" data-target="3">0</p><p class="stat-label">Fitness goals</p></div>
+                <div class="stat-card"><p class="stat-number" data-target="1000" data-suffix="+">0</p><p class="stat-label">Happy users</p></div>
+            </div>
+        </section>
+
         <section class="gallery">
             <h2 data-i18n="galleryTitle">Meal Gallery</h2>
             <h3>With these foods you can become healthy and strong</h3>
             <div class="gallery-grid">
-                <div class="gallery-item"><img src="images/protein-pancakes-berries.jpg" alt="Protein Pancakes with Berries"><div class="caption">Protein Pancakes with Berries</div></div>
-                <div class="gallery-item"><img src="images/baked-salmon-vegetables.jpg" alt="Baked Salmon with Vegetables"><div class="caption">Baked Salmon with Vegetables</div></div>
-                <div class="gallery-item"><img src="images/quinoa-power-bowl.jpg" alt="Quinoa Power Bowl"><div class="caption">Quinoa Power Bowl</div></div>
-                <div class="gallery-item"><img src="images/avocado-toast-eggs.jpg" alt="Avocado Toast with Eggs"><div class="caption">Avocado Toast with Eggs</div></div>
-                <div class="gallery-item"><img src="images/turkey-spinach-wrap.jpg" alt="Turkey Spinach Wrap"><div class="caption">Turkey Spinach Wrap</div></div>
-                <div class="gallery-item"><img src="images/mixed-nuts-dried-fruit.jpg" alt="Mixed Nuts and Dried Fruit"><div class="caption">Mixed Nuts and Dried Fruit</div></div>
-                <div class="gallery-item"><img src="images/grilled-shrimp-skewers.jpg" alt="Grilled Shrimp Skewers"><div class="caption">Grilled Shrimp Skewers</div></div>
-                <div class="gallery-item"><img src="images/chia-seed-pudding.jpg" alt="Chia Seed Pudding"><div class="caption">Chia Seed Pudding</div></div>
-                <div class="gallery-item"><img src="images/sweet-potato-chicken-bowl.jpg" alt="Sweet Potato Chicken Bowl"><div class="caption">Sweet Potato Chicken Bowl</div></div>
+                <div class="gallery-item"><img class="lazy-img" data-src="images/protein-pancakes-berries.jpg" alt="Protein Pancakes with Berries"><div class="caption">Protein Pancakes with Berries</div></div>
+                <div class="gallery-item"><img class="lazy-img" data-src="images/baked-salmon-vegetables.jpg" alt="Baked Salmon with Vegetables"><div class="caption">Baked Salmon with Vegetables</div></div>
+                <div class="gallery-item"><img class="lazy-img" data-src="images/quinoa-power-bowl.jpg" alt="Quinoa Power Bowl"><div class="caption">Quinoa Power Bowl</div></div>
+                <div class="gallery-item"><img class="lazy-img" data-src="images/avocado-toast-eggs.jpg" alt="Avocado Toast with Eggs"><div class="caption">Avocado Toast with Eggs</div></div>
+                <div class="gallery-item"><img class="lazy-img" data-src="images/turkey-spinach-wrap.jpg" alt="Turkey Spinach Wrap"><div class="caption">Turkey Spinach Wrap</div></div>
+                <div class="gallery-item"><img class="lazy-img" data-src="images/mixed-nuts-dried-fruit.jpg" alt="Mixed Nuts and Dried Fruit"><div class="caption">Mixed Nuts and Dried Fruit</div></div>
+                <div class="gallery-item"><img class="lazy-img" data-src="images/grilled-shrimp-skewers.jpg" alt="Grilled Shrimp Skewers"><div class="caption">Grilled Shrimp Skewers</div></div>
+                <div class="gallery-item"><img class="lazy-img" data-src="images/chia-seed-pudding.jpg" alt="Chia Seed Pudding"><div class="caption">Chia Seed Pudding</div></div>
+                <div class="gallery-item"><img class="lazy-img" data-src="images/sweet-potato-chicken-bowl.jpg" alt="Sweet Potato Chicken Bowl"><div class="caption">Sweet Potato Chicken Bowl</div></div>
             </div>
         </section>
     </main>

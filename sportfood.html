@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Craft - Sport Food</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
 </head>
 <body class="page-grid">
     <header id="main-header">
@@ -12,13 +13,13 @@
         <nav aria-label="Main menu">
             <a href="index.html" id="home" data-i18n="navHome">Home</a>
             <a href="sportfood.html" id="sportfood" data-i18n="navSport">Sport Food</a>
-            <a href="order.html" id="order" data-i18n="navOrder">Order</a>
-            <a href="builder.html" id="builder" data-i18n="navBuilder">Builder</a>
             <a href="recipes.html" id="resipes" data-i18n="navRecipes">Recipes</a>
-            <a href="team.html" id="team" data-i18n="navTeam">Our Team</a>
+            <a href="builder.html" id="builder" data-i18n="navBuilder">Builder</a>
+            <a href="order.html" id="order" data-i18n="navOrder">Order</a>
+            <a href="team.html" id="team" data-i18n="navTeam">Team</a>
             <button type="button" id="theme-btn" class="theme-btn" aria-label="Switch Day or Night theme">🌙 Night</button>
             <select id="langSelect" aria-label="Language"><option value="en">EN</option><option value="ru">RU</option><option value="kk">KZ</option></select>
-            <input type="color" id="fav-color" name="fav-color" value="#2c3e50" aria-label="Theme color">
+            <input type="color" id="fav-color" name="fav-color" value="#285943" aria-label="Theme color">
         </nav>
     </header>
 
@@ -38,6 +39,12 @@
         </section>
 
         <section class="card-row">
+            <div class="recipe-search">
+                <input type="search" id="mealSearch" placeholder="Search meals..." aria-label="Search meals" autocomplete="off">
+                <ul id="searchSuggestions" class="search-suggestions hidden"></ul>
+            </div>
+            <p id="searchEmpty" class="search-empty hidden">No meals found.</p>
+
             <div id="mealFilters" class="meal-filters">
                 <button type="button" class="meal-filter submit-btn active" data-cat="all" data-i18n="all">All</button>
                 <button type="button" class="meal-filter submit-btn" data-cat="breakfast" data-i18n="breakfast">Breakfast</button>
@@ -80,6 +87,7 @@
 
         <section class="reason faq">
             <h2 data-i18n="faqTitle">Frequently Asked Questions (FAQ)</h2>
+            <div class="faq-search"><input type="search" id="faqSearch" placeholder="Search FAQ..." aria-label="Search FAQ" autocomplete="off"></div>
             <div class="accordion-item">
                 <button type="button" class="accordion-header">What is included in the custom nutrition order?</button>
                 <div class="accordion-body hidden"><p>Our custom nutrition plan includes a personalized macro breakdown, a meal schedule tailored to your fitness goals, and daily calorie targets.</p></div>
@@ -110,7 +118,10 @@
             <ul id="nutritionList" class="nutrition-list"></ul>
             <p class="totals"><span data-i18n="total">Total</span>: <b id="totalCalories">0</b> kcal · <b id="totalProtein">0</b> g</p>
             <div class="calorie-track" aria-hidden="true"><div id="calorieBar" class="calorie-bar"></div></div>
-            <button type="button" id="clearNutritionBtn" class="submit-btn" data-i18n="clearBtn">Clear all</button>
+            <div class="summary-actions">
+                <button type="button" id="clearNutritionBtn" class="submit-btn" data-i18n="clearBtn">Clear all</button>
+                <button type="button" id="copyNutritionBtn" class="submit-btn copy-btn"><span class="copy-icon">📋</span><span class="copy-label">Copy</span><span class="copy-tooltip">Copied to clipboard!</span></button>
+            </div>
         </section>
     </aside>
 

@@ -701,3 +701,428 @@ body.modal-open {
     color: #fff;
     transform: translateY(-3px);
 }
+
+/* ===== Assignment 6 additions: jQuery features ===== */
+
+/* ----- Tasks 1-2: search field + autocomplete dropdown ----- */
+.recipe-search {
+    max-width: 520px;
+}
+
+.search-suggestions {
+    position: absolute;
+    z-index: 30;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 280px;
+    margin: 4px 0 0;
+    padding: 4px;
+    overflow-y: auto;
+    list-style: none;
+    border: 1px solid var(--fc-border);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: var(--fc-shadow);
+}
+
+.search-suggestions li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    color: var(--fc-text);
+    font-size: 0.94rem;
+    cursor: pointer;
+}
+
+.search-suggestions li:hover,
+.search-suggestions li.is-active {
+    background: var(--fc-green-light);
+}
+
+.search-suggestions strong {
+    color: var(--fc-green-dark);
+}
+
+.suggestion-type {
+    color: var(--fc-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.recipe-item.is-search-hidden {
+    display: none;
+}
+
+/* ----- Task 3: highlighted words + FAQ search ----- */
+mark.search-hit {
+    padding: 0 0.15em;
+    border-radius: 4px;
+    background: #ffe9a8;
+    color: var(--fc-green-dark);
+    box-shadow: 0 0 0 1px rgba(224, 162, 27, 0.35);
+}
+
+.faq-search {
+    max-width: 420px;
+}
+
+/* ----- Task 4: scroll progress bar ----- */
+.scroll-progress {
+    position: fixed;
+    z-index: 1060;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 7px;
+    background: rgba(40, 89, 67, 0.12);
+    pointer-events: none;
+}
+
+.scroll-progress-bar {
+    position: relative;
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: 0 8px 8px 0;
+    background: linear-gradient(90deg, #285943, #6fae72, #e0a21b, #6fae72, #285943);
+    background-size: 200% 100%;
+    box-shadow: 0 0 14px rgba(224, 162, 27, 0.55);
+    animation: progress-shimmer 6s linear infinite;
+    transition: width 0.12s linear;
+}
+
+/* glowing dot at the end of the bar */
+.scroll-progress-bar::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -5px;
+    width: 13px;
+    height: 13px;
+    border: 3px solid #e0a21b;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 12px rgba(224, 162, 27, 0.9);
+    transform: translateY(-50%);
+}
+
+.scroll-progress-bar.is-empty::after {
+    display: none;
+}
+
+.scroll-progress-bar.is-complete::after {
+    background: #e0a21b;
+}
+
+@keyframes progress-shimmer {
+    from { background-position: 0% 0; }
+    to   { background-position: 200% 0; }
+}
+
+/* ----- Task 5: animated counters ----- */
+.stat-card {
+    text-align: center;
+}
+
+.stat-number {
+    margin: 0;
+    color: var(--fc-green);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.stat-label {
+    color: var(--fc-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* ----- Task 6: button while loading ----- */
+.btn.is-loading {
+    cursor: wait;
+}
+
+/* ----- Task 7: toast notifications ----- */
+.fc-toast-wrap {
+    position: fixed;
+    z-index: 1070;
+    right: 1rem;
+    bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.6rem;
+    max-width: calc(100vw - 2rem);
+    pointer-events: none;
+}
+
+.fc-toast {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    max-width: 360px;
+    padding: 0.75rem 1rem;
+    border-left: 5px solid #9fc99a;
+    border-radius: 12px;
+    background: var(--fc-green-dark);
+    color: #fff;
+    font-size: 0.92rem;
+    box-shadow: 0 12px 30px rgba(13, 28, 19, 0.28);
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.fc-toast-icon {
+    display: inline-flex;
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #9fc99a;
+    color: var(--fc-green-dark);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.fc-toast-error {
+    border-left-color: #e5675c;
+}
+
+.fc-toast-error .fc-toast-icon {
+    background: #e5675c;
+    color: #fff;
+}
+
+.fc-toast-info {
+    border-left-color: #e0a21b;
+}
+
+.fc-toast-info .fc-toast-icon {
+    background: #e0a21b;
+    color: var(--fc-green-dark);
+}
+
+/* ----- Task 8: copy button + tooltip ----- */
+.ingredients-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+}
+
+.ingredients-head .ingredients-title {
+    margin-bottom: 0;
+}
+
+.copy-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.copy-btn.is-copied {
+    --bs-btn-color: #fff;
+    background: var(--fc-green);
+    border-color: var(--fc-green);
+    color: #fff;
+}
+
+.copy-tooltip {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 9px);
+    display: none;
+    padding: 0.3rem 0.6rem;
+    border-radius: 7px;
+    background: var(--fc-green-dark);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(13, 28, 19, 0.25);
+    pointer-events: none;
+}
+
+.copy-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 16px;
+    border: 5px solid transparent;
+    border-top-color: var(--fc-green-dark);
+}
+
+/* ----- Task 9: lazy images (soft "blur-up" when the photo arrives) ----- */
+.lazy-img.is-loaded {
+    animation: lazy-reveal 0.6s ease;
+}
+
+@keyframes lazy-reveal {
+    from { filter: blur(12px); transform: scale(1.04); }
+    to   { filter: blur(0);    transform: scale(1); }
+}
+
+@media (max-width: 575.98px) {
+    .fc-toast-wrap {
+        left: 1rem;
+        align-items: stretch;
+    }
+
+    .fc-toast {
+        max-width: none;
+    }
+}
+
+/* ===== Extra jQuery features: favorites, surprise, back to top ===== */
+.fav-count {
+    display: inline-block;
+    min-width: 1.3rem;
+    padding: 0 0.35rem;
+    border-radius: 999px;
+    background: var(--fc-green-light);
+    color: var(--fc-green-dark);
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.btn.active .fav-count {
+    background: #fff;
+}
+
+.recipe-item.is-fav-hidden {
+    display: none;
+}
+
+.fav-btn {
+    position: absolute;
+    z-index: 2;
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    color: #b9c4bb;
+    font-size: 1.3rem;
+    line-height: 1;
+    box-shadow: 0 4px 12px rgba(13, 28, 19, 0.18);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.fav-btn:hover {
+    color: #e58a97;
+}
+
+.fav-btn.is-fav {
+    color: #d6455d;
+}
+
+.fc-card.surprise-glow {
+    border-color: #e0a21b;
+    animation: surprise-glow 2.4s ease;
+}
+
+@keyframes surprise-glow {
+    0%   { box-shadow: 0 0 0 0 rgba(224, 162, 27, 0.75); }
+    40%  { box-shadow: 0 0 0 12px rgba(224, 162, 27, 0.35); }
+    100% { box-shadow: 0 0 0 0 rgba(224, 162, 27, 0); }
+}
+
+.back-to-top {
+    position: fixed;
+    z-index: 1050;
+    left: 1rem;
+    bottom: 1rem;
+    width: 46px;
+    height: 46px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--fc-green-dark);
+    color: #fff;
+    font-size: 1.3rem;
+    line-height: 1;
+    box-shadow: 0 10px 24px rgba(13, 28, 19, 0.28);
+    cursor: pointer;
+}
+
+.back-to-top:hover {
+    background: var(--fc-green);
+}
+
+.recipe-item .fc-card {
+    position: relative;   /* anchor for the heart button */
+}
+
+/* ===== Team <-> Recipes connection ===== */
+.team-pick {
+    color: var(--fc-muted);
+    font-size: 0.9rem;
+}
+
+.team-pick a {
+    color: var(--fc-green);
+    font-weight: 700;
+}
+
+.recipe-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.team-pick-badge {
+    display: inline-flex;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    background: #fdf3e1;
+    color: #8a5a00;
+    font-size: 0.73rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.team-pick-badge:hover {
+    background: #f8e3b8;
+    color: #6b4500;
+}
+
+
+.search-item.is-search-hidden,
+.menu-row.is-search-hidden {
+    display: none !important;
+}
+
+.recipe-search .search-suggestions {
+    z-index: 1040;
+}
+
+.summary-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+}
+
+.menu-row mark.search-hit,
+.fc-table mark.search-hit {
+    padding: 0 0.1em;
+}

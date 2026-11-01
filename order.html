@@ -7,7 +7,7 @@
     <title>Food Craft - Order Delivery</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="builder-order.css">
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
 </head>
 <body>
 <header>
@@ -26,6 +26,7 @@
                     <li class="nav-item"><a class="nav-link" href="builder.html">Meal Builder</a></li>
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="order.html">Order</a></li>
                     <li class="nav-item ms-lg-3 mt-3 mt-lg-0 color-control">
+                        
                         <button type="button" class="btn btn-sm btn-outline-light" id="bg-color-btn">Change color</button>
                         <input type="color" id="bg-color-picker" value="#f5f7f2" aria-label="Choose page background color">
                     </li>
@@ -58,6 +59,33 @@
                         <tr><td>Left Bank Center</td><td>30 - 45 mins</td><td>3000 ₸</td><td>700 ₸</td></tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="container pb-4 pb-lg-5">
+        <div class="section-box p-3 p-lg-4 text-center">
+            <p class="eyebrow mb-1">DELIVERY IN NUMBERS</p>
+            <h2 class="mb-4">Fast, Fair and Close to You</h2>
+            <div class="row g-4 justify-content-center">
+                <div class="col-12 col-md-4">
+                    <div class="fc-card stat-card p-4 h-100">
+                        <p class="stat-number"><span class="counter" data-target="3">0</span></p>
+                        <p class="stat-label mb-0">Delivery zones</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="fc-card stat-card p-4 h-100">
+                        <p class="stat-number"><span class="counter" data-target="15" data-suffix=" min">0</span></p>
+                        <p class="stat-label mb-0">Fastest delivery</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="fc-card stat-card p-4 h-100">
+                        <p class="stat-number"><span class="counter" data-target="1500" data-suffix=" ₸">0</span></p>
+                        <p class="stat-label mb-0">Lowest minimum order</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -105,6 +133,11 @@
                 <p class="eyebrow mb-1">NEED A LITTLE HELP?</p>
                 <h2>Delivery FAQ</h2>
                 <p class="text-secondary mb-0">Click a question to reveal the answer.</p>
+                <div class="faq-search mx-auto mt-3">
+                    <label for="faq-search" class="visually-hidden">Search the FAQ</label>
+                    <input type="search" id="faq-search" class="form-control" placeholder="Search the FAQ…" autocomplete="off">
+                    <p id="faq-search-status" class="small text-secondary mt-2 mb-0" aria-live="polite"></p>
+                </div>
             </div>
             <div class="accordion-container">
                 <article class="faq-item">
@@ -155,6 +188,13 @@
                     <select id="zone-select" class="form-select mb-2"></select>
                     <p id="zone-info" class="small text-secondary"></p>
                     <h3 class="h6">Menu</h3>
+                    <div class="recipe-search position-relative mb-2">
+                        <label for="menu-search" class="visually-hidden">Search the menu</label>
+                        <input type="search" id="menu-search" class="form-control form-control-sm" placeholder="Search dishes: “chicken”, “wrap”…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="menu-suggestions" aria-autocomplete="list">
+                        <ul id="menu-suggestions" class="search-suggestions" role="listbox" aria-label="Search suggestions" hidden></ul>
+                    </div>
+                    <p id="menu-search-count" class="small text-secondary mb-2" aria-live="polite"></p>
+                    <p id="menu-no-results" class="small text-secondary d-none" aria-live="polite"></p>
                     <div id="menu-list"></div>
                 </div>
                 <div class="col-lg-6">
@@ -164,7 +204,10 @@
                     <p class="mb-1">Subtotal: <strong id="sum-sub">0 ₸</strong></p>
                     <p class="mb-2">Total: <strong id="sum-total">0 ₸</strong></p>
                     <p id="min-warning" class="text-danger small"></p>
-                    <button type="button" id="eta-btn" class="btn btn-outline-success btn-sm">Estimate arrival time</button>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="button" id="eta-btn" class="btn btn-outline-success btn-sm">Estimate arrival time</button>
+                        <button type="button" id="copy-order-btn" class="btn btn-outline-success btn-sm copy-btn" aria-label="Copy order summary"><svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V6a2 2 0 0 1 2-2h9"></path></svg><span class="copy-label">Copy order</span><span class="copy-tooltip" aria-hidden="true">Copied to clipboard!</span></button>
+                    </div>
                     <p id="eta-output" class="small mt-2 mb-0" aria-live="polite"></p>
                 </div>
             </div>
@@ -254,7 +297,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="script.js"></script>
-<script src="fx.js"></script>
-<script src="order.js"></script>
 </body>
 </html>

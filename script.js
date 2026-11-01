@@ -50,6 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (target && !target.classList.contains("star")) playSound("click");
     });
 
+    // Assignment 6: shows a jQuery toast. On pages without jQuery it simply does nothing.
+    function notify(message, type) {
+        if (window.foodCraftUI) window.foodCraftUI.toast(message, type);
+    }
+
     /* =====================================================
        TASK 4. Change background color (button + color picker)
        Colors are saved, so they stay the same on every page.
@@ -270,6 +275,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
+    // 1x1 transparent picture: placeholder until jQuery lazy loading swaps in the real photo
+    const LAZY_PLACEHOLDER = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+
     // Builds a card from one recipe object and appends it to the list
     function appendRecipeCard(recipe) {
         const column = document.createElement("div");
@@ -280,9 +288,14 @@ document.addEventListener("DOMContentLoaded", function () {
             return "<li>" + ingredient + "</li>";
         }).join("");
 
+        // with jQuery: lazy loading (data-src); without jQuery: normal image
+        const imageAttributes = window.jQuery
+            ? 'src="' + LAZY_PLACEHOLDER + '" data-src="' + recipe.image + '" class="card-img-top recipe-card-img lazy-img"'
+            : 'src="' + recipe.image + '" class="card-img-top recipe-card-img" loading="lazy"';
+
         column.innerHTML =
             '<article class="card fc-card h-100">' +
-                '<img src="' + recipe.image + '" class="card-img-top recipe-card-img" alt="' + recipe.alt + '" loading="lazy">' +
+                '<img ' + imageAttributes + ' alt="' + recipe.alt + '">' +
                 '<div class="card-body p-3 p-lg-4 d-flex flex-column">' +
                     '<span class="recipe-tag">' + recipe.categoryLabel + '</span>' +
                     '<h3 class="card-title mt-2">' + recipe.title + '</h3>' +
@@ -321,9 +334,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (loadStatus) loadStatus.textContent = "Loaded " + loadedCount + " of " + list.length + " extra recipes.";
                     }
                     playSound("success");
+                    notify(batch.length + " more recipes loaded", "success");
                 })
                 .catch(function () {
                     loadMoreButton.disabled = false;
+                    notify("Could not load more recipes", "error");
                     if (loadStatus) loadStatus.textContent = "Could not load recipes. Open the site through a web server (not file://) and try again.";
                     playSound("error");
                 });
@@ -491,29 +506,49 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!allValid) {
                 setMessage("Please correct the highlighted fields and try again.", "error");
                 playSound("error");
+                notify("Please correct the highlighted fields.", "error");
                 return;
+            }
+
+            // Assignment 6 (jQuery): the button shows a spinner and "Please wait..." and stays
+            // disabled for a short moment; then it returns to normal and the callback runs.
+            // Without jQuery the old behaviour is used (just enable the button again).
+            function finishSubmit(done) {
+                if (window.foodCraftUI && submitButton) {
+                    window.foodCraftUI.stopLoading(submitButton, done);
+                } else {
+                    if (submitButton) submitButton.disabled = false;
+                    done();
+                }
             }
 
             // Callback: runs when the server answered successfully
             function handleSuccess() {
-                setMessage("Success! Thank you for subscribing to Food Craft.", "success");
-                form.reset();
-                rules.forEach(function (rule) {
-                    rule.input.classList.remove("is-valid", "is-invalid");
+                finishSubmit(function () {
+                    setMessage("Success! Thank you for subscribing to Food Craft.", "success");
+                    form.reset();
+                    rules.forEach(function (rule) {
+                        rule.input.classList.remove("is-valid", "is-invalid");
+                    });
+                    playSound("success");
+                    notify("Subscribed successfully. Welcome to Food Craft!", "success");
                 });
-                if (submitButton) submitButton.disabled = false;
-                playSound("success");
             }
 
             // Callback: runs when the request failed
             function handleError() {
-                setMessage("Could not send the form. Check your connection and try again.", "error");
-                if (submitButton) submitButton.disabled = false;
-                playSound("error");
+                finishSubmit(function () {
+                    setMessage("Could not send the form. Check your connection and try again.", "error");
+                    playSound("error");
+                    notify("Could not send the form. Please try again.", "error");
+                });
             }
 
             setMessage("Sending...", "");
-            if (submitButton) submitButton.disabled = true;
+            if (submitButton) {
+                if (window.foodCraftUI) window.foodCraftUI.startLoading(submitButton);
+                else submitButton.disabled = true;
+            }
             sendSubscription(
                 { name: nameInput.value.trim(), email: emailInput.value.trim() },
                 handleSuccess,
@@ -914,3 +949,1166 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+
+/* =========================================================
+   ASSIGNMENT 6. jQuery
+   Everything below uses jQuery. Every feature first checks that
+   its elements exist, so the same file works on all pages
+   (a page without jQuery simply skips this whole block).
+   ========================================================= */
+(function ($) {
+    "use strict";
+    if (typeof $ === "undefined") return;
+
+    /* =====================================================
+       TASK 0. Setup
+       ===================================================== */
+    $(document).ready(function () {
+        console.log("jQuery is ready!");
+
+        /* ---------- data shared by the Team and Recipes pages ----------
+           Key = role of the member (data-role on the team card). */
+        const TEAM_PICKS = {
+            content:     { name: "Asanali", recipe: "Avocado Toast" },
+            research:    { name: "Nurali",  recipe: "Protein Pancakes" },
+            development: { name: "Danial",  recipe: "Baked Salmon" }
+        };
+
+        function readFavorites() {                    // hearts from the Recipes page (localStorage)
+            try { return JSON.parse(localStorage.getItem("fc-favorites")) || []; } catch (e) { return []; }
+        }
+
+        function recipeLink(title) {                  // link to a recipe card: recipes.html#recipe=Title
+            return "recipes.html#recipe=" + encodeURIComponent(title);
+        }
+
+        /* ---------- small helpers ---------- */
+        function escapeHtml(text) {
+            return $("<div>").text(text).html();
+        }
+
+        function escapeRegExp(text) {
+            return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }
+
+        // Returns safe HTML where every match of "term" is wrapped in open/close tags
+        function markMatches(text, term, open, close) {
+            const parts = text.split(new RegExp("(" + escapeRegExp(term) + ")", "gi"));
+            // with a capture group, the odd items of the array are the matches
+            return parts.map(function (part, i) {
+                return i % 2 ? open + escapeHtml(part) + close : escapeHtml(part);
+            }).join("");
+        }
+
+        /* =====================================================
+           TASK 3. Search highlighting (used by tasks 1 and 3)
+           Walks through the text nodes only, so the HTML tags
+           (buttons, stars, links) are never broken.
+           ===================================================== */
+        function clearHighlights($scope) {
+            $scope.find("mark.search-hit").each(function () {
+                $(this).replaceWith(document.createTextNode($(this).text()));
+            });
+            $scope.each(function () { this.normalize(); });   // glue split text nodes back together
+        }
+
+        function highlight($scope, term) {
+            clearHighlights($scope);
+            if (!term) return 0;
+
+            $scope.find("*").addBack().contents().filter(function () {
+                return this.nodeType === 3 && this.nodeValue.trim() !== "";
+            }).each(function () {
+                const html = markMatches(this.nodeValue, term, '<mark class="search-hit">', "</mark>");
+                if (html.indexOf("<mark") !== -1) $(this).replaceWith(html);
+            });
+            return $scope.find("mark.search-hit").length;
+        }
+
+        /* =====================================================
+           TASK 9. Image lazy loading
+           Images keep a tiny placeholder in src and the real
+           address in data-src. When the image gets close to the
+           visible part of the page, data-src is moved to src.
+           ===================================================== */
+        function loadVisibleImages() {
+            const winTop = $(window).scrollTop();
+            const winBottom = winTop + $(window).height();
+            const margin = 250;                       // start loading a little before it appears
+
+            $("img.lazy-img[data-src]").each(function () {
+                const $img = $(this);
+                if (!$img.is(":visible")) return;     // hidden by a filter or search: wait
+
+                const top = $img.offset().top;
+                const bottom = top + $img.outerHeight();
+                if (bottom >= winTop - margin && top <= winBottom + margin) {
+                    $img.one("load", function () { $img.addClass("is-loaded"); })
+                        .one("error", function () { this.src = "images/foodcraft.jpg"; })
+                        .attr("src", $img.attr("data-src"))
+                        .removeAttr("data-src");
+                }
+            });
+        }
+
+        let lazyQueued = false;
+        function requestLazyCheck() {                 // at most one check per animation frame
+            if (lazyQueued) return;
+            lazyQueued = true;
+            window.requestAnimationFrame(function () {
+                lazyQueued = false;
+                loadVisibleImages();
+            });
+        }
+
+        /* =====================================================
+           TASK 7. Notification system (toast)
+           Appears, stays for a moment, then fades out.
+           ===================================================== */
+        const TOAST_ICONS = { success: "✓", error: "!", info: "i" };
+
+        function showToast(message, type) {
+            type = TOAST_ICONS[type] ? type : "success";
+
+            let $wrap = $("#toast-wrap");
+            if (!$wrap.length) {
+                $wrap = $('<div id="toast-wrap" class="fc-toast-wrap" role="status" aria-live="polite"></div>').appendTo("body");
+            }
+            while ($wrap.children().length >= 4) $wrap.children().first().remove();   // keep the screen clean
+
+            $('<div class="fc-toast"></div>')
+                .addClass("fc-toast-" + type)
+                .append($('<span class="fc-toast-icon" aria-hidden="true"></span>').text(TOAST_ICONS[type]))
+                .append($('<span class="fc-toast-text"></span>').text(message))
+                .hide()
+                .appendTo($wrap)
+                .fadeIn(250)
+                .delay(2800)
+                .fadeOut(500, function () { $(this).remove(); })
+                .on("click", function () {            // a click closes the toast earlier
+                    $(this).stop(true).fadeOut(200, function () { $(this).remove(); });
+                });
+        }
+
+        /* =====================================================
+           TASK 6. Loading spinner on submit
+           startLoading: spinner + "Please wait..." + disabled
+           stopLoading:  after a short delay -> normal button
+           ===================================================== */
+        const MIN_LOADING_MS = 1500;                  // the "server call" is shown at least this long
+
+        function startLoading(button) {
+            const $btn = $(button);
+            if ($btn.data("loading")) return;
+            $btn.data("label", $btn.html())
+                .data("loading", true)
+                .data("loadingStart", Date.now())
+                .prop("disabled", true)               // no repeated clicks
+                .attr("aria-busy", "true")
+                .addClass("is-loading")
+                .html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Please wait…');
+        }
+
+        function stopLoading(button, done) {
+            const $btn = $(button);
+            const elapsed = Date.now() - ($btn.data("loadingStart") || 0);
+            window.setTimeout(function () {
+                if ($btn.data("loading")) {
+                    $btn.html($btn.data("label"))
+                        .data("loading", false)
+                        .prop("disabled", false)
+                        .attr("aria-busy", "false")
+                        .removeClass("is-loading");
+                }
+                if (typeof done === "function") done();
+            }, Math.max(0, MIN_LOADING_MS - elapsed));
+        }
+
+        // The vanilla code above (form validation) calls these helpers
+        window.foodCraftUI = { toast: showToast, startLoading: startLoading, stopLoading: stopLoading };
+
+        /* =====================================================
+           TASK 4. Colorful and stylized scroll progress bar
+           ===================================================== */
+        const $progressBar = $('<span class="scroll-progress-bar is-empty"></span>');
+        $('<div class="scroll-progress" aria-hidden="true"></div>').append($progressBar).prependTo("body");
+
+        function updateProgress() {
+            const scrollable = $(document).height() - $(window).height();
+            const percent = scrollable > 0 ? Math.min(100, ($(window).scrollTop() / scrollable) * 100) : 0;
+            $progressBar.css("width", percent + "%")
+                .toggleClass("is-empty", percent < 0.5)
+                .toggleClass("is-complete", percent > 99.5);
+        }
+
+        /* =====================================================
+           TASK 5. Animated number counter
+           Starts once, when the number scrolls into view.
+           ===================================================== */
+        function runCounters() {
+            const winTop = $(window).scrollTop();
+            const winBottom = winTop + $(window).height();
+
+            $(".counter").each(function () {
+                const $counter = $(this);
+                if ($counter.data("done")) return;
+
+                const top = $counter.offset().top;
+                if (top + $counter.outerHeight() < winTop || top > winBottom - 40) return;   // not visible yet
+
+                $counter.data("done", true);
+                const target = parseInt($counter.attr("data-target"), 10) || 0;
+                const suffix = $counter.attr("data-suffix") || "";
+
+                $({ value: 0 }).animate({ value: target }, {
+                    duration: 2000,
+                    easing: "swing",
+                    step: function (now) { $counter.text(Math.floor(now).toLocaleString("en-US") + suffix); },
+                    complete: function () { $counter.text(target.toLocaleString("en-US") + suffix); }
+                });
+            });
+        }
+
+        /* =====================================================
+           EXTRA 3. "Back to top" button (appears after scrolling down)
+           ===================================================== */
+        const $backToTop = $('<button type="button" class="back-to-top" aria-label="Back to top">↑</button>')
+            .hide().appendTo("body");
+        let backVisible = false;
+
+        function updateBackToTop() {
+            const shouldShow = $(window).scrollTop() > 400;
+            if (shouldShow === backVisible) return;
+            backVisible = shouldShow;
+            if (shouldShow) $backToTop.stop(true, true).fadeIn(250);
+            else $backToTop.stop(true, true).fadeOut(250);
+        }
+        $backToTop.on("click", function () {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        $(window).on("scroll resize", function () {
+            updateBackToTop();
+            updateProgress();
+            runCounters();
+            requestLazyCheck();
+        });
+        $(window).on("load", function () {
+            updateProgress();
+            runCounters();
+            requestLazyCheck();
+        });
+        updateProgress();
+        runCounters();
+
+        /* =====================================================
+           RECIPES PAGE (tasks 1, 2, 3, 8, 9)
+           ===================================================== */
+        const $recipeList = $("#recipe-list");
+
+        if ($recipeList.length) {
+            const RECIPE_TEXT = ".card-title, .card-text, .recipe-tag, .card-body ul li";
+            const $searchInput = $("#recipe-search");
+            const $noRecipes = $("#no-recipes");
+            const defaultNoRecipesText = $noRecipes.text();
+
+            /* ---------- TASK 1. Real-time search and live filter ----------
+               Works together with the category buttons: a recipe is shown
+               only if it passes BOTH the category filter and the search. */
+            function applyRecipeSearch() {
+                const term = $searchInput.val().trim();
+                const lowerTerm = term.toLowerCase();
+                const $items = $recipeList.find(".recipe-item");
+
+                const $matches = $items.filter(function () {
+                    return !lowerTerm || $(this).find(RECIPE_TEXT).text().toLowerCase().indexOf(lowerTerm) !== -1;
+                });
+                $items.not($matches).addClass("is-search-hidden");
+                $matches.removeClass("is-search-hidden");
+
+                // EXTRA: "Favorites" filter (third condition, together with category and search)
+                const favOnly = $("#fav-filter-btn").attr("aria-pressed") === "true";
+                $items.each(function () {
+                    const title = $(this).find(".card-title").text().trim();
+                    $(this).toggleClass("is-fav-hidden", favOnly && favorites.indexOf(title) === -1);
+                });
+
+                highlight($items.find(RECIPE_TEXT), term);          // task 3 on the recipe cards
+
+                const visible = $items.not(".is-hidden").not(".is-search-hidden").not(".is-fav-hidden").length;
+                $("#recipe-count").text("Showing " + visible + " of " + $items.length + " recipes");
+                $noRecipes
+                    .text(term ? "No recipes match “" + term + "”."
+                        : favOnly ? "No favorites here yet. Tap the ♥ on a recipe."
+                        : defaultNoRecipesText)
+                    .toggleClass("d-none", visible > 0);
+
+                requestLazyCheck();                                  // newly shown images may need loading
+            }
+
+            /* ---------- TASK 2. Autocomplete suggestions ---------- */
+            const $suggest = $("#search-suggestions");
+            let suggestIndex = -1;
+
+            // "2 eggs" -> "Eggs", "50 g oats" -> "Oats"
+            function cleanIngredient(text) {
+                const cleaned = text.replace(/^[\d.,/]+\s*(g|kg|ml|l|teaspoons?|tablespoons?|cups?)?\s+/i, "").trim();
+                return cleaned ? cleaned.charAt(0).toUpperCase() + cleaned.slice(1) : text;
+            }
+
+            // Suggestions come from the cards that are on the page right now (also the loaded ones)
+            function collectSuggestions() {
+                const seen = {};
+                const list = [];
+                function add(text, type) {
+                    const key = text.toLowerCase();
+                    if (!text || seen[key]) return;
+                    seen[key] = true;
+                    list.push({ text: text, type: type });
+                }
+                $recipeList.find(".recipe-item").each(function () {
+                    add($(this).find(".card-title").text().trim(), "Recipe");
+                    $(this).find(".card-body ul li").each(function () {
+                        add(cleanIngredient($(this).text().trim()), "Ingredient");
+                    });
+                });
+                return list;
+            }
+
+            function hideSuggestions() {
+                $suggest.prop("hidden", true).empty();
+                $searchInput.attr("aria-expanded", "false").removeAttr("aria-activedescendant");
+                suggestIndex = -1;
+            }
+
+            function showSuggestions() {
+                const term = $searchInput.val().trim();
+                if (!term) { hideSuggestions(); return; }
+
+                const lowerTerm = term.toLowerCase();
+                const matches = collectSuggestions()
+                    .filter(function (s) {
+                        const lower = s.text.toLowerCase();
+                        return lower.indexOf(lowerTerm) !== -1 && lower !== lowerTerm;
+                    })
+                    .sort(function (a, b) {               // suggestions that START with the text go first
+                        const aStarts = a.text.toLowerCase().indexOf(lowerTerm) === 0 ? 0 : 1;
+                        const bStarts = b.text.toLowerCase().indexOf(lowerTerm) === 0 ? 0 : 1;
+                        return aStarts - bStarts;
+                    })
+                    .slice(0, 6);
+
+                if (!matches.length) { hideSuggestions(); return; }
+
+                $suggest.empty();
+                $.each(matches, function (i, suggestion) {
+                    $("<li>", { role: "option", id: "suggestion-" + i, "aria-selected": "false", "data-value": suggestion.text })
+                        .html(markMatches(suggestion.text, term, "<strong>", "</strong>"))
+                        .append($("<span>", { "class": "suggestion-type", text: suggestion.type }))
+                        .appendTo($suggest);
+                });
+                suggestIndex = -1;
+                $suggest.prop("hidden", false);
+                $searchInput.attr("aria-expanded", "true");
+            }
+
+            function setActiveSuggestion(index) {
+                const $options = $suggest.children();
+                if (!$options.length) return;
+                suggestIndex = (index + $options.length) % $options.length;
+                $options.removeClass("is-active").attr("aria-selected", "false");
+                const $active = $options.eq(suggestIndex).addClass("is-active").attr("aria-selected", "true");
+                $searchInput.attr("aria-activedescendant", $active.attr("id"));
+            }
+
+            function pickSuggestion(value) {
+                $searchInput.val(value);
+                hideSuggestions();
+                applyRecipeSearch();
+                $searchInput.trigger("focus");
+            }
+
+            $searchInput.on("input", function () {
+                applyRecipeSearch();                      // live filter on every typed character
+                showSuggestions();
+            });
+            $searchInput.on("click", showSuggestions);
+
+            $searchInput.on("keydown", function (event) {
+                const isOpen = !$suggest.prop("hidden");
+                switch (event.key) {
+                    case "ArrowDown":
+                        if (isOpen) { event.preventDefault(); setActiveSuggestion(suggestIndex + 1); }
+                        break;
+                    case "ArrowUp":
+                        if (isOpen) {
+                            event.preventDefault();
+                            setActiveSuggestion(suggestIndex === -1 ? $suggest.children().length - 1 : suggestIndex - 1);
+                        }
+                        break;
+                    case "Enter":
+                        if (isOpen && suggestIndex > -1) {
+                            event.preventDefault();
+                            pickSuggestion($suggest.children().eq(suggestIndex).attr("data-value"));
+                        }
+                        break;
+                    case "Escape":
+                        hideSuggestions();
+                        break;
+                }
+            });
+
+            // mousedown (not click) so the input does not lose focus before the choice is made
+            $suggest.on("mousedown", "li", function (event) {
+                event.preventDefault();
+                pickSuggestion($(this).attr("data-value"));
+            });
+
+            $(document).on("click", function (event) {
+                if (!$(event.target).closest(".recipe-search").length) hideSuggestions();
+            });
+
+            // The category buttons have their own handler (added earlier);
+            // this delegated one runs after it, so search + category work together.
+            $(document).on("click", "[data-filter]", applyRecipeSearch);
+
+            /* ---------- TASK 8. "Copy ingredients" button ---------- */
+            const ICON_COPY = '<svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V6a2 2 0 0 1 2-2h9"></path></svg>';
+            const ICON_CHECK = '<svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"></path></svg>';
+            let copyingByCode = false;
+
+            function addCopyButtons() {
+                $recipeList.find(".recipe-item").each(function () {
+                    const $item = $(this);
+                    const $heading = $item.find(".ingredients-title");
+                    if (!$heading.length || $item.find(".copy-btn").length) return;
+
+                    const title = $item.find(".card-title").text().trim();
+                    const $button = $('<button type="button" class="btn btn-outline-success btn-sm copy-btn"></button>')
+                        .attr("aria-label", "Copy ingredients of " + title)
+                        .html(ICON_COPY + '<span class="copy-label">Copy</span>')
+                        .append('<span class="copy-tooltip" aria-hidden="true">Copied to clipboard!</span>');
+
+                    // heading + button side by side (the heading keeps its own style)
+                    $heading.wrap('<div class="ingredients-head"></div>').after($button);
+                });
+            }
+
+            // Modern API first; old execCommand as a fallback (for pages opened without https)
+            function copyText(text) {
+                if (navigator.clipboard && window.isSecureContext) {
+                    return navigator.clipboard.writeText(text);
+                }
+                return new Promise(function (resolve, reject) {
+                    const $temp = $("<textarea readonly>").val(text)
+                        .css({ position: "fixed", top: 0, left: 0, opacity: 0 }).appendTo("body");
+                    $temp[0].select();
+                    copyingByCode = true;
+                    let ok = false;
+                    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+                    copyingByCode = false;
+                    $temp.remove();
+                    if (ok) resolve(); else reject(new Error("copy failed"));
+                });
+            }
+
+            function showCopied($button, title) {
+                window.clearTimeout($button.data("timer"));
+                $button.addClass("is-copied")
+                    .find(".copy-icon").replaceWith(ICON_CHECK);
+                $button.find(".copy-label").text("Copied");
+                $button.find(".copy-tooltip").stop(true, true).fadeIn(150);
+
+                showToast("Ingredients of “" + title + "” copied", "success");
+
+                $button.data("timer", window.setTimeout(function () {
+                    $button.removeClass("is-copied")
+                        .find(".copy-icon").replaceWith(ICON_COPY);
+                    $button.find(".copy-label").text("Copy");
+                    $button.find(".copy-tooltip").fadeOut(250);
+                }, 2000));
+            }
+
+            $recipeList.on("click", ".copy-btn", function () {
+                const $button = $(this);
+                const $item = $button.closest(".recipe-item");
+                const title = $item.find(".card-title").text().trim();
+                const lines = $item.find(".card-body ul li").map(function () {
+                    return "• " + $(this).text().trim();
+                }).get();
+
+                copyText(title + " – ingredients:\n" + lines.join("\n")).then(function () {
+                    showCopied($button, title);
+                }, function () {
+                    showToast("Could not copy. Please select the text and press Ctrl+C.", "error");
+                });
+            });
+
+            // The browser "copy" event: also confirm when the person copies a selection by hand (Ctrl+C)
+            $(document).on("copy", function () {
+                if (copyingByCode) return;
+                if (String(window.getSelection()).length > 0) showToast("Text copied to clipboard", "info");
+            });
+
+            /* =====================================================
+               EXTRA 1. Favorites (heart on every card, saved in localStorage)
+               ===================================================== */
+            let favorites = [];
+            try { favorites = JSON.parse(localStorage.getItem("fc-favorites")) || []; } catch (e) { favorites = []; }
+
+            function saveFavorites() {
+                try { localStorage.setItem("fc-favorites", JSON.stringify(favorites)); } catch (e) { /* ignore */ }
+                $("#fav-count").text(favorites.length);
+            }
+
+            function addFavButtons() {
+                $recipeList.find(".recipe-item").each(function () {
+                    const $item = $(this);
+                    if ($item.find(".fav-btn").length) return;
+                    const title = $item.find(".card-title").text().trim();
+                    const isFav = favorites.indexOf(title) !== -1;
+                    $('<button type="button" class="fav-btn"></button>')
+                        .toggleClass("is-fav", isFav)
+                        .attr({ "aria-pressed": String(isFav), "aria-label": "Favorite: " + title })
+                        .text("♥")
+                        .prependTo($item.find("article.card"));
+                });
+            }
+
+            $recipeList.on("click", ".fav-btn", function () {
+                const $button = $(this);
+                const title = $button.closest(".recipe-item").find(".card-title").text().trim();
+                const index = favorites.indexOf(title);
+                const nowFav = index === -1;
+
+                if (nowFav) favorites.push(title); else favorites.splice(index, 1);
+                saveFavorites();
+
+                $button.toggleClass("is-fav", nowFav).attr("aria-pressed", String(nowFav)).removeClass("pop-anim");
+                void $button[0].offsetWidth;                       // restart the pop animation
+                $button.addClass("pop-anim");
+
+                showToast(nowFav ? "“" + title + "” added to favorites" : "“" + title + "” removed from favorites",
+                          nowFav ? "success" : "info");
+                if ($("#fav-filter-btn").attr("aria-pressed") === "true") applyRecipeSearch();
+            });
+
+            $("#fav-filter-btn").on("click", function () {
+                const $button = $(this);
+                const on = $button.attr("aria-pressed") !== "true";
+                $button.attr("aria-pressed", String(on)).toggleClass("active", on);
+                applyRecipeSearch();
+            });
+            $("#fav-count").text(favorites.length);
+
+            /* =====================================================
+               EXTRA 2. "Surprise me": picks a random visible recipe
+               ===================================================== */
+            $("#surprise-btn").on("click", function () {
+                const $pool = $recipeList.find(".recipe-item").not(".is-hidden, .is-search-hidden, .is-fav-hidden");
+                if (!$pool.length) {
+                    showToast("Nothing to pick from. Clear the search or filters first.", "info");
+                    return;
+                }
+                const $pick = $pool.eq(Math.floor(Math.random() * $pool.length));
+                const title = $pick.find(".card-title").text().trim();
+
+                $recipeList.find(".surprise-glow").removeClass("surprise-glow");
+                $pick[0].scrollIntoView({ behavior: "smooth", block: "center" });
+                $pick.find(".fc-card").addClass("surprise-glow");
+                showToast("Try today: " + title, "info");
+                window.setTimeout(function () { $pick.find(".fc-card").removeClass("surprise-glow"); }, 2600);
+            });
+
+            /* =====================================================
+               CONNECTION WITH THE TEAM PAGE
+               1) "Team pick" badge on the recipes chosen by team members
+               2) a link like recipes.html#recipe=Baked%20Salmon scrolls to that card
+               ===================================================== */
+            function addTeamBadges() {
+                $.each(TEAM_PICKS, function (role, pick) {
+                    $recipeList.find(".recipe-item").filter(function () {
+                        return $(this).find(".card-title").text().trim() === pick.recipe;
+                    }).each(function () {
+                        const $item = $(this);
+                        const $tag = $item.find(".recipe-tag");
+                        if (!$tag.length || $item.find(".team-pick-badge").length) return;
+
+                        const $badge = $('<a class="team-pick-badge" href="team.html"></a>')
+                            .text("★ Team pick: " + pick.name)
+                            .attr("title", "Meet " + pick.name + " on the Our Team page");
+                        $tag.wrap('<div class="recipe-tags"></div>').after($badge);
+                    });
+                });
+            }
+
+            function openRecipeFromLink() {
+                const match = window.location.hash.match(/^#recipe=(.+)$/);
+                if (!match) return;
+                let title;
+                try { title = decodeURIComponent(match[1]); } catch (e) { return; }
+
+                const $item = $recipeList.find(".recipe-item").filter(function () {
+                    return $(this).find(".card-title").text().trim().toLowerCase() === title.toLowerCase();
+                }).first();
+
+                if (!$item.length) {
+                    showToast("Recipe “" + title + "” was not found.", "error");
+                    return;
+                }
+
+                // make sure the card is not hidden by a filter, then show it
+                $(".recipe-filters [data-filter=all]").not(".active").trigger("click");
+                $searchInput.val("");
+                applyRecipeSearch();
+
+                $recipeList.find(".surprise-glow").removeClass("surprise-glow");
+                $item[0].scrollIntoView({ behavior: "smooth", block: "center" });
+                $item.find(".fc-card").addClass("surprise-glow");
+                window.setTimeout(function () { $item.find(".fc-card").removeClass("surprise-glow"); }, 2600);
+                showToast("Opened: " + title, "info");
+
+                // safety check: if the page height changed while scrolling, bring the card back
+                window.setTimeout(function () {
+                    const rect = $item[0].getBoundingClientRect();
+                    if (rect.bottom < 0 || rect.top > window.innerHeight) {
+                        $item[0].scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
+                }, 1300);
+            }
+
+            /* ---------- Cards added later by "Load more recipes" ----------
+               Watch the list: new card -> copy button, heart, search, lazy loading. */
+            addCopyButtons();
+            addFavButtons();
+            addTeamBadges();
+            window.setTimeout(openRecipeFromLink, 400);        // after the cards are fully built
+            $(window).on("hashchange", openRecipeFromLink);
+            new MutationObserver(function () {
+                addCopyButtons();
+                addFavButtons();
+                addTeamBadges();
+                applyRecipeSearch();
+            }).observe($recipeList[0], { childList: true });
+
+            requestLazyCheck();
+        }
+
+        /* =====================================================
+           CONNECTION WITH THE RECIPES PAGE (team side)
+           1) every member gets a link to his favorite recipe
+           2) "Your Favorite Recipes": hearts saved on the Recipes page
+           ===================================================== */
+        $(".team-member").each(function () {
+            const pick = TEAM_PICKS[$(this).attr("data-role")];
+            if (!pick) return;
+            $('<p class="team-pick mt-3 mb-0">Favorite recipe: </p>')
+                .append($("<a>", { href: recipeLink(pick.recipe), text: pick.recipe }))
+                .appendTo($(this).find(".card-body"));
+        });
+
+        const $teamFavorites = $("#team-favorites");
+
+        function renderTeamFavorites() {
+            const favorites = readFavorites();
+            $teamFavorites.empty();
+            $.each(favorites, function (i, title) {
+                $("<a>", { "class": "btn btn-outline-success btn-sm", href: recipeLink(title), text: "♥ " + title })
+                    .appendTo($teamFavorites);
+            });
+            $("#team-favorites-empty").toggleClass("d-none", favorites.length > 0);
+        }
+
+        if ($teamFavorites.length) {
+            renderTeamFavorites();
+            // another tab changed the hearts -> update the list
+            $(window).on("storage", function (event) {
+                if (event.originalEvent.key === "fc-favorites") renderTeamFavorites();
+            });
+        }
+
+        /* =====================================================
+           TEAM PAGE EXTRA: filter members by role (fade animation)
+           ===================================================== */
+        const $teamMembers = $(".team-member");
+
+        if ($teamMembers.length) {
+            $(".team-filters").on("click", "[data-role-filter]", function () {
+                const $button = $(this);
+                const role = $button.attr("data-role-filter");
+
+                $button.siblings().removeClass("active").attr("aria-pressed", "false");
+                $button.addClass("active").attr("aria-pressed", "true");
+
+                const $show = $teamMembers.filter(function () {
+                    return role === "all" || $(this).attr("data-role") === role;
+                });
+
+                $teamMembers.stop(true, true);
+                // first the other cards fade out, then the chosen ones fade in
+                $teamMembers.not($show).fadeOut(200).promise().then(function () {
+                    $show.fadeIn(300);
+                });
+                $("#team-count").text("Showing " + $show.length + " of " + $teamMembers.length + " team members");
+            });
+        }
+
+        /* =====================================================
+           TASK 3. FAQ search with highlighting
+           Highlights every match, opens the answers that contain it.
+           ===================================================== */
+        const $faqSearch = $("#faq-search");
+
+        if ($faqSearch.length) {
+            const FAQ_TEXT = ".accordion-header span:first-child, .accordion-content p";
+            const $faqStatus = $("#faq-search-status");
+
+            function setFaqOpen($item, open) {
+                $item.toggleClass("is-open", open);
+                $item.find(".accordion-header").attr("aria-expanded", String(open));
+            }
+
+            $faqSearch.on("input", function () {
+                const term = $faqSearch.val().trim();
+                const $items = $(".faq-item");
+                const total = highlight($items.find(FAQ_TEXT), term);
+
+                let questionsWithMatch = 0;
+                $items.each(function () {
+                    const $item = $(this);
+                    const hasMatch = $item.find("mark.search-hit").length > 0;
+
+                    if (term && hasMatch) {
+                        questionsWithMatch++;
+                        if (!$item.hasClass("is-open")) {
+                            $item.data("autoOpened", true);       // remember: opened by the search
+                            setFaqOpen($item, true);
+                        }
+                    } else if ($item.data("autoOpened")) {        // close only what the search opened
+                        $item.data("autoOpened", false);
+                        setFaqOpen($item, false);
+                    }
+                });
+
+                if (!term) {
+                    $faqStatus.text("");
+                } else if (total === 0) {
+                    $faqStatus.text("No matches found.");
+                } else {
+                    $faqStatus.text(total + (total === 1 ? " match" : " matches") + " in " +
+                        questionsWithMatch + (questionsWithMatch === 1 ? " question" : " questions"));
+                }
+            });
+        }
+    });
+})(window.jQuery);
+
+/* =========================================================
+   ASSIGNMENT 6. jQuery for the MEAL BUILDER and ORDER pages
+   Uses the helpers made above (window.foodCraftUI: toast,
+   startLoading, stopLoading). Runs only on builder.html and
+   order.html; every other page skips this block.
+   Tasks: 1 live filter, 2 autocomplete, 3 highlighting,
+   6 spinner on submit, 7 toasts, 8 copy button
+   (4 progress bar, 5 counters and 9 lazy loading are global
+   and work on these pages as soon as jQuery is loaded).
+   ========================================================= */
+(function ($) {
+    "use strict";
+    if (typeof $ === "undefined") return;
+
+    $(document).ready(function () {
+        const $buildForm = $("#buildForm");
+        const $orderForm = $("#orderForm");
+        if (!$buildForm.length && !$orderForm.length) return;
+
+        const ui = window.foodCraftUI || {
+            toast: function () {},
+            startLoading: function () {},
+            stopLoading: function (button, done) { if (done) done(); }
+        };
+
+        /* ---------- small helpers (search + highlight) ---------- */
+        function escapeHtml(text) {
+            return $("<div>").text(text).html();
+        }
+
+        function escapeRegExp(text) {
+            return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }
+
+        function markMatches(text, term, open, close) {
+            const parts = text.split(new RegExp("(" + escapeRegExp(term) + ")", "gi"));
+            return parts.map(function (part, i) {
+                return i % 2 ? open + escapeHtml(part) + close : escapeHtml(part);
+            }).join("");
+        }
+
+        function clearHighlights($scope) {
+            $scope.find("mark.search-hit").each(function () {
+                $(this).replaceWith(document.createTextNode($(this).text()));
+            });
+            $scope.each(function () { this.normalize(); });
+        }
+
+        // TASK 3: wraps every match in <mark>; only text nodes are touched, so buttons stay safe
+        function highlight($scope, term) {
+            clearHighlights($scope);
+            if (!term) return 0;
+            $scope.find("*").addBack().contents().filter(function () {
+                return this.nodeType === 3 && this.nodeValue.trim() !== "";
+            }).each(function () {
+                const html = markMatches(this.nodeValue, term, '<mark class="search-hit">', "</mark>");
+                if (html.indexOf("<mark") !== -1) $(this).replaceWith(html);
+            });
+            return $scope.find("mark.search-hit").length;
+        }
+
+        /* =====================================================
+           TASKS 1 + 2 + 3. One reusable search:
+           live filter, autocomplete dropdown, highlighting.
+           options: input, suggest, count, none, items, text,
+                    noun, suggestions()
+           ===================================================== */
+        function setupSearch(o) {
+            const $input = $(o.input);
+            const $suggest = $(o.suggest);
+            const $count = $(o.count);
+            const $none = $(o.none);
+            let activeIndex = -1;
+
+            // TASK 1. Live filter: runs on every typed character
+            function applySearch() {
+                const term = $input.val().trim();
+                const lower = term.toLowerCase();
+                const $all = $(o.items);
+
+                const $matches = $all.filter(function () {
+                    return !lower || $(this).find(o.text).text().toLowerCase().indexOf(lower) !== -1;
+                });
+                $all.not($matches).addClass("is-search-hidden");
+                $matches.removeClass("is-search-hidden");
+
+                highlight($all.find(o.text), term);             // TASK 3
+
+                $count.text(term ? "Showing " + $matches.length + " of " + $all.length + " " + o.noun : "");
+                $none.text(term ? "Nothing matches “" + term + "”." : "")
+                     .toggleClass("d-none", !term || $matches.length > 0);
+
+                $(window).trigger("scroll");                    // newly shown images may need lazy loading
+            }
+
+            // TASK 2. Autocomplete suggestions
+            function hideSuggestions() {
+                $suggest.prop("hidden", true).empty();
+                $input.attr("aria-expanded", "false").removeAttr("aria-activedescendant");
+                activeIndex = -1;
+            }
+
+            function showSuggestions() {
+                const term = $input.val().trim();
+                if (!term) { hideSuggestions(); return; }
+                const lower = term.toLowerCase();
+
+                const seen = {};
+                const matches = o.suggestions().filter(function (s) {
+                    const key = s.text.toLowerCase();
+                    if (!s.text || seen[key]) return false;
+                    seen[key] = true;
+                    return key.indexOf(lower) !== -1 && key !== lower;
+                }).sort(function (a, b) {                       // suggestions that START with the text go first
+                    const aStarts = a.text.toLowerCase().indexOf(lower) === 0 ? 0 : 1;
+                    const bStarts = b.text.toLowerCase().indexOf(lower) === 0 ? 0 : 1;
+                    return aStarts - bStarts;
+                }).slice(0, 6);
+
+                if (!matches.length) { hideSuggestions(); return; }
+
+                $suggest.empty();
+                $.each(matches, function (i, s) {
+                    $("<li>", { role: "option", id: o.suggest.slice(1) + "-" + i, "aria-selected": "false", "data-value": s.text })
+                        .html(markMatches(s.text, term, "<strong>", "</strong>"))
+                        .append($("<span>", { "class": "suggestion-type", text: s.type }))
+                        .appendTo($suggest);
+                });
+                activeIndex = -1;
+                $suggest.prop("hidden", false);
+                $input.attr("aria-expanded", "true");
+            }
+
+            function setActive(index) {
+                const $options = $suggest.children();
+                if (!$options.length) return;
+                activeIndex = (index + $options.length) % $options.length;
+                $options.removeClass("is-active").attr("aria-selected", "false");
+                const $active = $options.eq(activeIndex).addClass("is-active").attr("aria-selected", "true");
+                $input.attr("aria-activedescendant", $active.attr("id"));
+            }
+
+            function pick(value) {
+                $input.val(value);
+                hideSuggestions();
+                applySearch();
+                $input.trigger("focus");
+            }
+
+            $input.on("input", function () { applySearch(); showSuggestions(); });
+            $input.on("click", showSuggestions);
+
+            $input.on("keydown", function (event) {
+                const isOpen = !$suggest.prop("hidden");
+                switch (event.key) {
+                    case "ArrowDown":
+                        if (isOpen) { event.preventDefault(); setActive(activeIndex + 1); }
+                        break;
+                    case "ArrowUp":
+                        if (isOpen) {
+                            event.preventDefault();
+                            setActive(activeIndex === -1 ? $suggest.children().length - 1 : activeIndex - 1);
+                        }
+                        break;
+                    case "Enter":
+                        if (isOpen && activeIndex > -1) {
+                            event.preventDefault();
+                            pick($suggest.children().eq(activeIndex).attr("data-value"));
+                        }
+                        break;
+                    case "Escape":
+                        hideSuggestions();
+                        break;
+                }
+            });
+
+            // mousedown (not click): the input must not lose focus before the choice is made
+            $suggest.on("mousedown", "li", function (event) {
+                event.preventDefault();
+                pick($(this).attr("data-value"));
+            });
+
+            $(document).on("click", function (event) {
+                if (!$(event.target).closest($input.closest(".recipe-search")).length) hideSuggestions();
+            });
+        }
+
+        /* =====================================================
+           TASK 8. Copy to clipboard (button + checkmark + tooltip)
+           ===================================================== */
+        const ICON_COPY = '<svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V6a2 2 0 0 1 2-2h9"></path></svg>';
+        const ICON_CHECK = '<svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"></path></svg>';
+        let copyingByCode = false;
+
+        // Modern API first; old execCommand as a fallback (pages opened without https)
+        function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+            return new Promise(function (resolve, reject) {
+                const $temp = $("<textarea readonly>").val(text)
+                    .css({ position: "fixed", top: 0, left: 0, opacity: 0 }).appendTo("body");
+                $temp[0].select();
+                copyingByCode = true;
+                let ok = false;
+                try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+                copyingByCode = false;
+                $temp.remove();
+                if (ok) resolve(); else reject(new Error("copy failed"));
+            });
+        }
+
+        function showCopied($button) {
+            window.clearTimeout($button.data("timer"));
+            $button.addClass("is-copied").find(".copy-icon").replaceWith(ICON_CHECK);
+            $button.find(".copy-label").text("Copied");
+            $button.find(".copy-tooltip").stop(true, true).fadeIn(150);
+
+            $button.data("timer", window.setTimeout(function () {
+                $button.removeClass("is-copied").find(".copy-icon").replaceWith(ICON_COPY);
+                $button.find(".copy-label").text($button.attr("data-label") || "Copy");
+                $button.find(".copy-tooltip").fadeOut(250);
+            }, 2000));
+        }
+
+        function copyWithButton($button, text, message) {
+            if (!$button.attr("data-label")) $button.attr("data-label", $button.find(".copy-label").text());
+            copyText(text).then(function () {
+                showCopied($button);
+                ui.toast(message, "success");
+            }, function () {
+                ui.toast("Could not copy. Please select the text and press Ctrl+C.", "error");
+            });
+        }
+
+        // The browser "copy" event: also confirm a copy made by hand (Ctrl+C)
+        $(document).on("copy", function () {
+            if (copyingByCode) return;
+            if (String(window.getSelection()).length > 0) ui.toast("Text copied to clipboard", "info");
+        });
+
+        
+        function setupSubmit(formId, boxId, buttonSelector) {
+            const box = document.getElementById(boxId);
+            const $btn = $(buttonSelector);
+            let ticks = 0;          // how many times the result box was changed
+            let before = 0;
+            let waiting = false;
+            let timer = null;
+
+            function finish() {
+                waiting = false;
+                window.clearTimeout(timer);
+                const isError = box.classList.contains("alert-danger");
+                const message = $(box).text().trim();
+                ui.stopLoading($btn, function () { ui.toast(message, isError ? "error" : "success"); });
+            }
+
+            new MutationObserver(function () {
+                if (box.classList.contains("d-none")) return;      // the box was only hidden (reset)
+                ticks++;
+                if (waiting) finish();
+            }).observe(box, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+
+            // capture phase: runs before the vanilla submit handler
+            document.addEventListener("submit", function (event) {
+                if (event.target.id === formId) before = ticks;
+            }, true);
+
+            // bubbling phase: runs after the vanilla submit handler
+            $(document).on("submit", "#" + formId, function () {
+                if (ticks !== before) {                            // vanilla code already showed an error
+                    ui.toast($(box).text().trim(), box.classList.contains("alert-danger") ? "error" : "success");
+                    return;
+                }
+                if ($("#" + formId).find(".is-invalid").length) {  // invalid fields: no server call
+                    ui.toast("Please fix the highlighted fields.", "error");
+                    return;
+                }
+                waiting = true;
+                ui.startLoading($btn);
+                timer = window.setTimeout(function () {            // safety: never stay disabled forever
+                    if (waiting) { waiting = false; ui.stopLoading($btn); }
+                }, 15000);
+            });
+        }
+
+        if ($buildForm.length) {
+            setupSearch({
+                input: "#builder-search",
+                suggest: "#builder-suggestions",
+                count: "#builder-search-count",
+                none: "#builder-no-results",
+                items: ".search-item",
+                text: "td, .card-title, .card-text",
+                noun: "results",
+                suggestions: function () {
+                    const list = [];
+                    $(".search-item").each(function () {
+                        const $item = $(this);
+                        if ($item.is("tr")) {
+                            list.push({ text: $item.children("td").eq(0).text().trim(), type: "Category" });
+                            $.each($item.children("td").eq(1).text().split("/"), function (i, part) {
+                                list.push({ text: part.trim(), type: "Ingredient" });
+                            });
+                        } else {
+                            list.push({ text: $item.find(".card-title").text().trim(), type: "Bowl" });
+                        }
+                    });
+                    return list;
+                }
+            });
+
+            setupSubmit("buildForm", "formSuccess", "#build-submit");
+
+            $("#popular-bowls").on("click", ".card .btn", function () {
+                const title = $(this).closest(".card").find(".card-title").text().trim();
+                ui.toast("“" + title + "” added to your bowl summary", "success");
+            });
+
+            $("#toppings").on("change", "input", function () {
+                const name = $(this).closest("label").clone().children().remove().end().text().trim();
+                ui.toast(this.checked ? name + " added to your bowl" : name + " removed from your bowl",
+                         this.checked ? "success" : "info");
+            });
+
+            $("#meal-base").on("change", function () {
+                ui.toast("Base: " + $(this).find("option:selected").text(), "info");
+            });
+
+            $("#step-next").on("click", function () {
+                if ($buildForm.find(".is-invalid").length) ui.toast("Please fix the highlighted fields.", "error");
+            });
+
+            $("#step-reset").on("click", function () {
+                ui.toast("The form was reset", "info");
+            });
+
+            $("#copy-bowl-btn").on("click", function () {
+                const text = "Food Craft bowl: " + $("#sum-name").text().trim() +
+                    " | " + $("#sum-kcal").text().trim() + " kcal | " + $("#sum-price").text().trim() + " ₸";
+                copyWithButton($(this), text, "Bowl summary copied");
+            });
+        }
+
+        if ($orderForm.length) {
+            // name of a menu row without the small price text
+            function dishName($row) {
+                return $row.children("span").first().clone().children().remove().end().text().trim();
+            }
+
+            setupSearch({
+                input: "#menu-search",
+                suggest: "#menu-suggestions",
+                count: "#menu-search-count",
+                none: "#menu-no-results",
+                items: "#menu-list .menu-row",
+                text: "span",
+                noun: "dishes",
+                suggestions: function () {
+                    return $("#menu-list .menu-row").map(function () {
+                        return { text: dishName($(this)), type: "Dish" };
+                    }).get();
+                }
+            });
+
+            setupSubmit("orderForm", "orderSuccess", "#orderForm button[type=submit]");
+
+            $("#menu-list").on("click", "[data-add]", function () {
+                ui.toast(dishName($(this).closest(".menu-row")) + " added to cart", "success");
+            });
+
+            document.getElementById("cart-list").addEventListener("click", function (event) {
+                const button = event.target.closest("[data-remove]");
+                if (!button) return;
+                const name = $(button).siblings("span").text().split("×")[0].trim();
+                ui.toast(name + " removed from cart", "info");
+            }, true);
+
+            $(document).on("click", "[data-delivery]", function () {
+                ui.toast($(this).closest(".fc-card").find(".card-title").text().trim() + " selected", "success");
+            });
+
+            $("#zone-select").on("change", function () {
+                ui.toast("Delivery zone: " + $(this).find("option:selected").text(), "info");
+            });
+
+            $("#order-reset").on("click", function () {
+                ui.toast("The order form was reset", "info");
+            });
+
+            $("#copy-order-btn").on("click", function () {
+                const lines = $("#cart-list [data-remove]").map(function () {
+                    return "• " + $(this).siblings("span").text().trim();
+                }).get();
+
+                if (!lines.length) {
+                    ui.toast("Your cart is empty. Add dishes first.", "error");
+                    return;
+                }
+                const text = "Food Craft order\n" + lines.join("\n") +
+                    "\nDelivery: " + $("#sum-delivery").text().trim() +
+                    "\nSubtotal: " + $("#sum-sub").text().trim() +
+                    "\nTotal: " + $("#sum-total").text().trim();
+                copyWithButton($(this), text, "Order summary copied");
+            });
+        }
+    });
+})(window.jQuery);

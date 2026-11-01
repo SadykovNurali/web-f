@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const $ = selector => document.querySelector(selector);
     const $$ = selector => document.querySelectorAll(selector);
 
-  
+
     const baseMeals = [
         { id: "oatmeal", name: "Protein Oatmeal with Banana", cat: "breakfast", calories: 350, protein: 25, desc: "A tasty, energy-rich meal with 25g of protein.", img: "protein-oatmeal-banana.jpg" },
         { id: "chicken", name: "Grilled Chicken & Rice", cat: "post-workout", calories: 520, protein: 45, desc: "Helps you gain mass and build muscle.", img: "grilled-chicken-rice.jpg" },
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         kk: { navHome: "Басты бет", navSport: "Спорт тағамы", night: "🌙 Түн", day: "☀️ Күн", welcome: "Food Craft сайтына қош келдіңіз", greetBtn: "Сәлемдес", timeBtn: "Уақытты көрсету", whyTitle: "Неге бізді таңдау керек?", galleryTitle: "Тағам галереясы", guideTitle: "Спорттық тамақтану нұсқаулығы", all: "Барлығы", breakfast: "Таңғы ас", post: "Жаттығудан кейін", snack: "Жеңіл тамақ", addBtn: "Рационыма қосу", loadMore: "Тағы тағам жүктеу", offerBtn: "Арнайы ұсынысты ашу", orderTitle: "Жеке тамақтану тапсырысы", labelName: "Атыңыз:", labelEmail: "Электрондық пошта:", labelGoal: "Мақсат:", next: "Келесі", back: "Артқа", send: "Өтініш жіберу", reset: "Тазалау", faqTitle: "Жиі қойылатын сұрақтар (FAQ)", filterTitle: "Мақсат бойынша сүзгі", nutritionTitle: "Менің рационым", clearBtn: "Тазалау", total: "Барлығы", morning: "Қайырлы таң", afternoon: "Қайырлы күн", evening: "Қайырлы кеш", ready: "Дұрыс тамақтануға дайынсыз ба?", step: "Қадам", of: "/", empty: "Әзірге ештеңе қосылмаған.", high: "Ақуыз көп" }
     };
 
-    
+
     Object.assign(dictionary.ru, {"tagline": "На нашем сайте вы можете выбрать спортивные и повседневные блюда с калориями.", "li1": "Легко следить за калориями", "li2": "Интерактивный конструктор блюд и рационов", "li3": "Свежие ингредиенты и полезные советы", "galleryH3": "С этими блюдами вы станете здоровее и сильнее", "guideIntro": "Выберите блюда для максимальной эффективности тренировок:", "thMeal": "Блюдо", "thCal": "Калории (ккал)", "thProt": "Белок (г)", "thBest": "Подходит для", "best1": "Завтрак перед тренировкой", "best2": "Набор мышц после тренировки", "best3": "Быстрое восстановление", "labelNotes": "Пожелания или аллергии:", "popTitle": "Специальная скидка!", "popText": "Получите скидку 20% на первый индивидуальный заказ питания при подписке сегодня.", "close": "Закрыть", "goalNote": "Выберите цель, чтобы узнать больше!", "gMuscle": "Набор массы", "gWeight": "Похудение", "gEndurance": "Выносливость", "q1": "Что входит в индивидуальный заказ питания?", "a1": "Индивидуальный план включает расчёт макронутриентов, расписание приёмов пищи под вашу цель и дневную норму калорий.", "q2": "Как отслеживать калории в Food Craft?", "a2": "Добавляйте блюда в «Мой рацион» на странице спортпитания, и итоги посчитаются автоматически.", "q3": "Можно ли позже изменить цель?", "a3": "Да, вы можете обновить предпочтения и цель в любое время, заполнив форму заказа заново.", "mT": "О наборе мышечной массы", "mX": "Для набора мышц нужен профицит калорий, 1,6–2,2 г белка на кг веса и силовые тренировки с прогрессией нагрузки.", "wT": "О похудении", "wX": "Для похудения нужен устойчивый дефицит калорий, много клетчатки из овощей и цельных злаков и достаточно воды.", "eT": "О выносливости", "eX": "Для выносливости нужны сложные углеводы для гликогена, баланс электролитов и правильное питание после тренировки."});
     Object.assign(dictionary.kk, {"tagline": "Сайтымызда калориясы бар спорттық және күнделікті тағамдарды таңдай аласыз.", "li1": "Калорияны бақылау оңай", "li2": "Интерактивті тағам және рацион құрастырушы", "li3": "Жаңа ингредиенттер және пайдалы кеңестер", "galleryH3": "Осы тағамдармен сіз сау әрі күшті боласыз", "guideIntro": "Жаттығу тиімділігін арттыру үшін ұсынылған тағамдарды қараңыз:", "thMeal": "Тағам", "thCal": "Калория (ккал)", "thProt": "Ақуыз (г)", "thBest": "Қашан қолайлы", "best1": "Жаттығу алдындағы таңғы ас", "best2": "Жаттығудан кейін бұлшықет жинау", "best3": "Жылдам қалпына келу", "labelNotes": "Тілектер немесе аллергия:", "popTitle": "Арнайы жеңілдік!", "popText": "Бүгін жазылсаңыз, алғашқы жеке тамақтану тапсырысына 20% жеңілдік аласыз.", "close": "Жабу", "goalNote": "Көбірек білу үшін мақсатты таңдаңыз!", "gMuscle": "Бұлшықет жинау", "gWeight": "Арықтау", "gEndurance": "Төзімділік", "q1": "Жеке тамақтану тапсырысына не кіреді?", "a1": "Жеке жоспарға макронутриенттер есебі, мақсатыңызға сай тамақтану кестесі және күнделікті калория нормасы кіреді.", "q2": "Food Craft-та калорияны қалай бақылауға болады?", "a2": "Спорт тағамы бетіндегі «Менің рационым» бөліміне тағамдарды қосыңыз, қорытынды автоматты есептеледі.", "q3": "Мақсатты кейін өзгертуге бола ма?", "a3": "Иә, тапсырыс формасын қайта толтырып, қалауыңыз бен мақсатыңызды кез келген уақытта жаңарта аласыз.", "mT": "Бұлшықет жинау туралы", "mX": "Бұлшықет жинау үшін калория профициті, дене салмағының әр кг-на 1,6–2,2 г ақуыз және жүктемені арттыратын күш жаттығулары қажет.", "wT": "Арықтау туралы", "wX": "Арықтау үшін тұрақты калория тапшылығы, көкөніс пен тұтас дәнді дақылдардан көп талшық және жеткілікті су қажет.", "eT": "Төзімділік туралы", "eX": "Төзімділік үшін гликогенге арналған күрделі көмірсулар, электролит балансы және жаттығудан кейінгі дұрыс тамақтану қажет."});
     Object.assign(dictionary.en, {"mT": "Muscle Gain Insights", "mX": "To build quality muscle mass, consume a calorie surplus with 1.6–2.2g of protein per kilogram of body weight, combined with progressive overload resistance training.", "wT": "Weight Loss Insights", "wX": "Effective weight loss requires a sustainable calorie deficit, high fiber intake from vegetables and whole grains, and adequate hydration to boost metabolism.", "eT": "Endurance Insights", "eX": "Endurance training demands complex carbohydrates for sustained glycogen storage, electrolyte balance, and proper post-workout recovery nutrition."});
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sound.play().catch(() => { });
     }
 
- 
+
     function timeGreeting() {
         const hour = new Date().getHours();
         switch (true) {
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
             default:        return t("evening");
         }
     }
- 
+
     function getFilter(cat) {
         switch (cat) {
             case "breakfast":
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.documentElement.lang = lang;
         if (langSelect) langSelect.value = lang;
         $$("[data-i18n]").forEach(el => {
-            if (!el.dataset.en) el.dataset.en = el.textContent; 
+            if (!el.dataset.en) el.dataset.en = el.textContent;
             el.textContent = dictionary[lang][el.dataset.i18n] || el.dataset.en;
         });
         refreshGoal();
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showGreeting() {
         if (!greeting) return;
-    
+
         greeting.innerHTML = `${timeGreeting()}, <strong></strong>! ${t("ready")}`;
         greeting.querySelector("strong").textContent = localStorage.getItem("visitorName") || "Guest";
     }
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         nameForm.addEventListener("submit", event => {
             event.preventDefault();
             const nameInput = $("#nameInput");
-            if (!/\p{L}/u.test(nameInput.value)) { nameInput.classList.add("invalid"); return; } 
+            if (!/\p{L}/u.test(nameInput.value)) { nameInput.classList.add("invalid"); return; }
             nameInput.classList.remove("invalid");
             localStorage.setItem("visitorName", nameInput.value.trim());
             showGreeting();
@@ -137,20 +137,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-   
+
     const colorPicker = $("#fav-color");
-    const themedElements = [document.getElementById("main-header"), document.getElementsByTagName("footer")[0]];
-    function applyThemeColor(color) { themedElements.forEach(el => { if (el) el.style.backgroundColor = color; }); }
-    const savedColor = localStorage.getItem("siteThemeColor");
+    function applyThemeColor(color) { document.documentElement.style.setProperty("--fc-green", color); }
+    const savedColor = localStorage.getItem("themeColorV2");
     if (savedColor) { applyThemeColor(savedColor); if (colorPicker) colorPicker.value = savedColor; }
     if (colorPicker) {
         colorPicker.addEventListener("input", () => {
             applyThemeColor(colorPicker.value);
-            localStorage.setItem("siteThemeColor", colorPicker.value);
+            localStorage.setItem("themeColorV2", colorPicker.value);
         });
     }
 
-  
+
     const timeBtn = $("#timeBtn");
     if (timeBtn) {
         timeBtn.addEventListener("click", () => {
@@ -172,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
     menu.addEventListener("keydown", event => {
         const items = [...menu.querySelectorAll("a, .theme-btn")];
         const index = items.indexOf(document.activeElement);
-        if (index === -1) return; 
+        if (index === -1) return;
         switch (event.key) {
             case "ArrowRight":
             case "ArrowDown":
@@ -307,7 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const totalProtein = myMeals.reduce((sum, item) => sum + item.protein, 0);
         animateNumber($("#totalCalories"), totalCalories);
         $("#totalProtein").textContent = totalProtein;
-        $("#calorieBar").style.width = Math.min(totalCalories / 2500 * 100, 100) + "%"; 
+        $("#calorieBar").style.width = Math.min(totalCalories / 2500 * 100, 100) + "%";
         localStorage.setItem("myMeals", JSON.stringify(myMeals));
     }
     const clearBtn = $("#clearNutritionBtn");
@@ -340,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
         $("#sendBtn").classList.toggle("hidden", index !== steps.length - 1);
         updateStepIndicator();
     }
-   
+
     function goToStep(direction, callback) {
         if (direction > 0 && currentStep === 0 && !validateIdentity()) return;
         currentStep = Math.min(Math.max(currentStep + direction, 0), steps.length - 1);
@@ -352,7 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
         currentStep = 0;
         showStep(0);
     }
-   
+
     function sendOrder(data, onSuccess, onError) {
         fetch("https://jsonplaceholder.typicode.com/posts", {
             method: "POST",
@@ -388,7 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showStep(0);
     }
 
-   
+
     const accordionHeaders = [...$$(".accordion-header")];
     accordionHeaders.forEach((header, index) => {
         header.addEventListener("click", () => {
@@ -406,7 +405,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-   
+
     const goalKeys = { muscle: ["mT", "mX"], weight: ["wT", "wX"], endurance: ["eT", "eX"] };
     let activeGoalKey = null;
     function fillGoal(key) {
@@ -443,4 +442,221 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     applyLanguage();
+});
+
+
+
+
+$(document).ready(function () {
+    console.log("jQuery is ready!");
+
+    var $toastWrap = $('<div class="fc-toast-wrap"></div>').appendTo("body");
+
+    function toast(message, type) {
+        var icon = type === "error" ? "!" : type === "info" ? "i" : "✓";
+        var $t = $('<div class="fc-toast"></div>')
+            .addClass(type ? "fc-toast-" + type : "")
+            .append($('<span class="fc-toast-icon"></span>').text(icon))
+            .append($("<span></span>").text(message))
+            .hide()
+            .appendTo($toastWrap)
+            .fadeIn(250);
+        $t.delay(2800).fadeOut(400, function () { $(this).remove(); });
+        $t.on("click", function () { $(this).stop(true).fadeOut(200, function () { $(this).remove(); }); });
+    }
+
+  
+    var $search = $("#mealSearch");
+    var $suggest = $("#searchSuggestions");
+
+    function mealNames() {
+        var names = [];
+        $("#mealGrid .card h3").each(function () { names.push($(this).text()); });
+        $(".food-table tbody tr td:first-child").each(function () {
+            var n = $(this).text();
+            if (names.indexOf(n) === -1) { names.push(n); }
+        });
+        return names;
+    }
+
+    function applyMealSearch() {
+        var term = $search.val().trim().toLowerCase();
+        $("#mealGrid .card").each(function () {
+            var match = $(this).find("h3").text().toLowerCase().indexOf(term) !== -1;
+            $(this).toggleClass("is-search-hidden", !match);
+        });
+        $(".food-table tbody tr").each(function () {
+            var match = $(this).text().toLowerCase().indexOf(term) !== -1;
+            $(this).toggleClass("is-search-hidden", !match);
+        });
+        var visible = $("#mealGrid .card").not(".is-search-hidden").length;
+        $("#searchEmpty").toggleClass("hidden", !term || visible > 0);
+    }
+
+    function showSuggestions() {
+        var term = $search.val().trim().toLowerCase();
+        $suggest.empty();
+        if (!term) { $suggest.addClass("hidden"); return; }
+        var found = mealNames().filter(function (name) { return name.toLowerCase().indexOf(term) !== -1; });
+        if (!found.length) { $suggest.addClass("hidden"); return; }
+        $.each(found, function (i, name) { $("<li></li>").text(name).appendTo($suggest); });
+        $suggest.removeClass("hidden");
+    }
+
+    if ($search.length) {
+        $search.on("input keyup", function () { applyMealSearch(); showSuggestions(); });
+        $search.on("keydown", function (e) { if (e.key === "Escape") { $suggest.addClass("hidden"); } });
+        $suggest.on("click", "li", function () {
+            $search.val($(this).text());
+            $suggest.addClass("hidden");
+            applyMealSearch();
+        });
+        $(document).on("click", function (e) {
+            if (!$(e.target).closest(".recipe-search").length) { $suggest.addClass("hidden"); }
+        });
+        var grid = document.getElementById("mealGrid");
+        if (grid) { new MutationObserver(applyMealSearch).observe(grid, { childList: true }); }
+    }
+
+  
+    function highlight($el, term) {
+        var orig = $el.data("orig");
+        if (orig === undefined) { orig = $el.text(); $el.data("orig", orig); }
+        if (!term) { $el.text(orig); return false; }
+        var re = new RegExp("(" + term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+        var parts = orig.split(re);
+        var found = false;
+        $el.empty();
+        $.each(parts, function (i, part) {
+            if (i % 2 === 1) {
+                found = true;
+                $('<mark class="search-hit"></mark>').text(part).appendTo($el);
+            } else {
+                $el.append(document.createTextNode(part));
+            }
+        });
+        return found;
+    }
+
+    $("#faqSearch").on("input keyup", function () {
+        var term = $(this).val().trim();
+        $(".faq .accordion-item").each(function () {
+            var $item = $(this);
+            var $body = $item.find(".accordion-body");
+            var inHead = highlight($item.find(".accordion-header"), term);
+            var inText = highlight($body.find("p"), term);
+            $item.toggle(!term || inHead || inText);
+            $body.toggleClass("hidden", !term || !inText);
+        });
+    });
+
+    
+    var $bar = $('<span class="scroll-progress-bar is-empty"></span>');
+    $('<div class="scroll-progress"></div>').append($bar).prependTo("body");
+    function updateProgress() {
+        var max = $(document).height() - $(window).height();
+        var pct = max > 0 ? ($(window).scrollTop() / max) * 100 : 0;
+        $bar.css("width", pct + "%").toggleClass("is-empty", pct <= 0).toggleClass("is-complete", pct >= 99);
+    }
+    $(window).on("scroll resize load", updateProgress);
+    updateProgress();
+
+  
+    var $counters = $(".stat-number");
+    function runCounters() {
+        $counters.each(function () {
+            var $el = $(this);
+            if ($el.data("done")) { return; }
+            var viewBottom = $(window).scrollTop() + $(window).height();
+            if ($el.offset().top < viewBottom - 40) {
+                $el.data("done", true);
+                var target = Number($el.data("target"));
+                var suffix = $el.data("suffix") || "";
+                $({ n: 0 }).animate({ n: target }, {
+                    duration: 1800,
+                    step: function (now) { $el.text(Math.floor(now) + suffix); },
+                    complete: function () { $el.text(target + suffix); }
+                });
+            }
+        });
+    }
+    if ($counters.length) {
+        $(window).on("scroll resize load", runCounters);
+        runCounters();
+    }
+
+    $("#orderForm").on("submit", function () {
+        var $btn = $("#sendBtn");
+        var nameOk = /\p{L}/u.test($("#username").val().trim());
+        var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($("#email").val().trim());
+        if (!nameOk || !emailOk || $btn.prop("disabled")) { return; }
+        var label = $btn.text();
+        $btn.prop("disabled", true).html('<span class="spinner"></span> Please wait…');
+        setTimeout(function () { $btn.prop("disabled", false).text(label); }, 2000);
+    });
+
+    $(document).on("click", ".add-btn", function () {
+        toast($(this).closest(".card").find("h3").text() + " added to your nutrition");
+    });
+    $(document).on("click", ".remove-btn", function () { toast("Item removed", "info"); });
+    $("#clearNutritionBtn").on("click", function () { toast("Nutrition list cleared", "info"); });
+
+    var formMsgEl = document.getElementById("formMsg");
+    if (formMsgEl) {
+        new MutationObserver(function () {
+            var $m = $(formMsgEl);
+            var text = $m.text();
+            if ($m.hasClass("ok") && text) { toast("Form submitted successfully"); }
+            else if ($m.hasClass("err") && text) { toast(text, "error"); }
+        }).observe(formMsgEl, { childList: true });
+    }
+    $("#nameForm").on("submit", function () {
+        if (/\p{L}/u.test($("#nameInput").val())) { toast("Nice to meet you, " + $("#nameInput").val().trim() + "!"); }
+    });
+
+   
+    $("#copyNutritionBtn").on("click", function () {
+        var $btn = $(this);
+        if (!$("#nutritionList .remove-btn").length) { toast("Nothing to copy yet", "info"); return; }
+        var lines = $("#nutritionList li").map(function () { return $(this).find("span").first().text(); }).get();
+        var text = lines.join("\n") + "\nTotal: " + $("#totalCalories").text() + " kcal · " + $("#totalProtein").text() + " g";
+
+        function done() {
+            $btn.addClass("is-copied").find(".copy-icon").text("✔");
+            $btn.find(".copy-tooltip").stop(true, true).fadeIn(150).delay(1500).fadeOut(250);
+            setTimeout(function () { $btn.removeClass("is-copied").find(".copy-icon").text("📋"); }, 2000);
+        }
+        function fallback() {
+            var $tmp = $("<textarea></textarea>").val(text).appendTo("body");
+            $tmp[0].select();
+            try { document.execCommand("copy"); done(); } catch (e) { toast("Copy failed", "error"); }
+            $tmp.remove();
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, fallback);
+        } else {
+            fallback();
+        }
+    });
+
+   
+    var placeholder = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+    var $lazy = $("img.lazy-img").attr("src", placeholder);
+    function loadVisible() {
+        var limit = $(window).scrollTop() + $(window).height() + 150;
+        $lazy = $lazy.filter(function () {
+            var $img = $(this);
+            if ($img.offset().top < limit) {
+                $img.one("load", function () { $(this).addClass("is-loaded"); })
+                    .attr("src", $img.attr("data-src"))
+                    .removeAttr("data-src");
+                return false;
+            }
+            return true;
+        });
+    }
+    if ($lazy.length) {
+        $(window).on("scroll resize load", loadVisible);
+        loadVisible();
+    }
 });

@@ -7,7 +7,7 @@
     <title>Food Craft - Meal Builder</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="builder-order.css">
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
 </head>
 <body>
 <header>
@@ -26,6 +26,7 @@
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="builder.html">Meal Builder</a></li>
                     <li class="nav-item"><a class="nav-link" href="order.html">Order</a></li>
                     <li class="nav-item ms-lg-3 mt-3 mt-lg-0 color-control">
+                        
                         <button type="button" class="btn btn-sm btn-outline-light" id="bg-color-btn">Change color</button>
                         <input type="color" id="bg-color-picker" value="#f5f7f2" aria-label="Choose page background color">
                     </li>
@@ -51,16 +52,30 @@
 
     <section class="container pb-4 pb-lg-5">
         <div class="section-box p-3 p-lg-4">
+            <p class="eyebrow mb-1">FIND YOUR MEAL</p>
+            <h2 class="mb-3">Search Ingredients &amp; Bowls</h2>
+            <div class="recipe-search position-relative mb-2">
+                <label for="builder-search" class="form-label">Search the guide and the popular bowls</label>
+                <input type="search" id="builder-search" class="form-control" placeholder="Try “chicken”, “rice” or “pizza”" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="builder-suggestions" aria-autocomplete="list">
+                <ul id="builder-suggestions" class="search-suggestions" role="listbox" aria-label="Search suggestions" hidden></ul>
+            </div>
+            <p id="builder-search-count" class="recipe-count mb-0" aria-live="polite"></p>
+            <p id="builder-no-results" class="text-secondary mb-0 d-none" aria-live="polite"></p>
+        </div>
+    </section>
+
+    <section class="container pb-4 pb-lg-5">
+        <div class="section-box p-3 p-lg-4">
             <p class="eyebrow mb-1">KNOW WHAT YOU EAT</p>
             <h2 class="mb-3">Ingredient Calorie &amp; Price Guide</h2>
             <div class="table-responsive">
                 <table class="table table-hover align-middle fc-table mb-0">
                     <thead><tr><th>Ingredient Category</th><th>Ingredient Name</th><th>Calories (kcal)</th><th>Price (KZT)</th></tr></thead>
                     <tbody>
-                        <tr><td>Base</td><td>Brown Rice / Quinoa</td><td>140</td><td>600 ₸</td></tr>
-                        <tr><td>Protein</td><td>Grilled Chicken Breast</td><td>165</td><td>900 ₸</td></tr>
-                        <tr><td>Vegetables</td><td>Fresh Avocado &amp; Greens</td><td>120</td><td>500 ₸</td></tr>
-                        <tr><td>Dressing</td><td>Olive Oil &amp; Herb Sauce</td><td>90</td><td>300 ₸</td></tr>
+                        <tr class="search-item"><td>Base</td><td>Brown Rice / Quinoa</td><td>140</td><td>600 ₸</td></tr>
+                        <tr class="search-item"><td>Protein</td><td>Grilled Chicken Breast</td><td>165</td><td>900 ₸</td></tr>
+                        <tr class="search-item"><td>Vegetables</td><td>Fresh Avocado &amp; Greens</td><td>120</td><td>500 ₸</td></tr>
+                        <tr class="search-item"><td>Dressing</td><td>Olive Oil &amp; Herb Sauce</td><td>90</td><td>300 ₸</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -73,9 +88,9 @@
             <h2 class="mb-2">Popular Fast &amp; Tasty Bowls</h2>
             <p class="text-secondary mb-4">Choose one of our most popular quick combos or build your own bowl below.</p>
             <div class="row g-4">
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4 search-item">
                     <article class="card fc-card h-100">
-                        <img src="images/burg.jpg" class="card-img-top recipe-card-img" alt="Double Cheeseburger Bowl" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="images/burg.jpg" class="card-img-top recipe-card-img lazy-img" alt="Double Cheeseburger Bowl">
                         <div class="card-body p-3 p-lg-4 d-flex flex-column">
                             <span class="recipe-tag">Popular</span>
                             <h3 class="card-title mt-2">Double Cheese Burger Bowl</h3>
@@ -85,9 +100,9 @@
                         </div>
                     </article>
                 </div>
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4 search-item">
                     <article class="card fc-card h-100">
-                        <img src="images/pizz.jpg" class="card-img-top recipe-card-img" alt="Pepperoni Pizza Bowl" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="images/pizz.jpg" class="card-img-top recipe-card-img lazy-img" alt="Pepperoni Pizza Bowl">
                         <div class="card-body p-3 p-lg-4 d-flex flex-column">
                             <span class="recipe-tag">Popular</span>
                             <h3 class="card-title mt-2">Pepperoni Pizza Bowl</h3>
@@ -97,9 +112,9 @@
                         </div>
                     </article>
                 </div>
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4 search-item">
                     <article class="card fc-card h-100">
-                        <img src="images/chic.jpg" class="card-img-top recipe-card-img" alt="Crispy Chicken and Fries" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="images/chic.jpg" class="card-img-top recipe-card-img lazy-img" alt="Crispy Chicken and Fries">
                         <div class="card-body p-3 p-lg-4 d-flex flex-column">
                             <span class="recipe-tag">Popular</span>
                             <h3 class="card-title mt-2">Crispy Chicken &amp; Fries</h3>
@@ -108,6 +123,33 @@
                             <button type="button" class="btn btn-outline-success w-100 mt-auto">Quick Select</button>
                         </div>
                     </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container pb-4 pb-lg-5">
+        <div class="section-box p-3 p-lg-4 text-center">
+            <p class="eyebrow mb-1">BUILDER IN NUMBERS</p>
+            <h2 class="mb-4">What You Can Choose From</h2>
+            <div class="row g-4 justify-content-center">
+                <div class="col-12 col-md-4">
+                    <div class="fc-card stat-card p-4 h-100">
+                        <p class="stat-number"><span class="counter" data-target="4">0</span></p>
+                        <p class="stat-label mb-0">Base ingredients</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="fc-card stat-card p-4 h-100">
+                        <p class="stat-number"><span class="counter" data-target="4">0</span></p>
+                        <p class="stat-label mb-0">Extra toppings</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="fc-card stat-card p-4 h-100">
+                        <p class="stat-number"><span class="counter" data-target="780">0</span></p>
+                        <p class="stat-label mb-0">kcal in our biggest popular bowl</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,7 +164,10 @@
                 <p id="builder-greeting" class="fw-bold mb-1">Welcome! Enter your name to personalize your bowl.</p>
                 <div class="d-flex align-items-center gap-2 mb-1"><span id="tag-preview" class="tag-preview"></span><span id="sum-name"></span></div>
                 <p id="sum-desc" class="small text-secondary mb-1"></p>
-                <p class="mb-0"><strong id="sum-kcal">0</strong> kcal · <strong id="sum-price">0</strong> ₸</p>
+                <div class="summary-actions">
+                    <p class="mb-0"><strong id="sum-kcal">0</strong> kcal · <strong id="sum-price">0</strong> ₸</p>
+                    <button type="button" id="copy-bowl-btn" class="btn btn-outline-success btn-sm copy-btn" aria-label="Copy bowl summary"><svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V6a2 2 0 0 1 2-2h9"></path></svg><span class="copy-label">Copy</span><span class="copy-tooltip" aria-hidden="true">Copied to clipboard!</span></button>
+                </div>
             </div>
             <div id="step-progress" class="step-progress"></div>
             <form action="#" method="post" id="buildForm" novalidate>
@@ -228,7 +273,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="script.js"></script>
-<script src="fx.js"></script>
-<script src="builder.js"></script>
 </body>
 </html>
